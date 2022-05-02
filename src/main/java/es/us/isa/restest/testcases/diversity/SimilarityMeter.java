@@ -114,6 +114,7 @@ public class SimilarityMeter {
         LEVENSHTEIN,
         LONGEST_COMMON_SUBSEQUENCE,
         CONTENT
+
     }
 
 }
