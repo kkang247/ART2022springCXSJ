@@ -5,9 +5,6 @@ import es.us.isa.restest.coverage.CoverageGatherer;
 import es.us.isa.restest.coverage.CoverageMeter;
 import es.us.isa.restest.generators.ARTestCaseGenerator;
 import es.us.isa.restest.generators.AbstractTestCaseGenerator;
-import es.us.isa.restest.generators.ConstraintBasedTestCaseGenerator;
-import es.us.isa.restest.generators.FuzzingTestCaseGenerator;
-import es.us.isa.restest.generators.RandomTestCaseGenerator;
 import es.us.isa.restest.reporting.AllureReportManager;
 import es.us.isa.restest.reporting.StatsReportManager;
 import es.us.isa.restest.runners.RESTestRunner;
@@ -38,7 +35,7 @@ import static es.us.isa.restest.util.Timer.TestStep.ALL;
 public class TestGenerationAndExecution {
 
 	// Properties file with configuration settings
-	private static String propertiesFilePath = "src/test/resources/Folder/api.properties";
+	private static String propertiesFilePath = "src/test/resources/Restcountries/restcountries.properties";
 
 	private static List<String> argsList;								// List containing args
 	
@@ -56,7 +53,7 @@ public class TestGenerationAndExecution {
 	private static Boolean deletePreviousResults; 						// Set to 'true' if you want previous CSVs and Allure reports.
 	private static Float faultyRatio; 									// Percentage of faulty test cases to generate. Defaults to 0.1
 	private static Integer totalNumTestCases; 							// Total number of test cases to be generated (-1 for infinite loop)
-	private static Integer timeDelay; 									// Delay between requests in seconds (-1 for no delay)
+
 	private static String generator; 									// Generator (RT: Random testing, CBT:Constraint-based testing)
 	private static Boolean logToFile;									// If 'true', log messages will be printed to external files
 	private static boolean executeTestCases;							// If 'false', test cases will be generated but not executed
@@ -132,10 +129,6 @@ public class TestGenerationAndExecution {
 		int iteration = 1;
 		while (totalNumTestCases == -1 || runner.getNumTestCases() < totalNumTestCases) {
 
-			// Introduce optional delay
-			if (iteration != 1 && timeDelay != -1)
-				delay(timeDelay);
-
 			// Generate unique test class name to avoid the same class being loaded everytime
 			String id = IDGenerator.generateTimeId();
 			String className = testClassName + "_" + id;
@@ -157,7 +150,7 @@ public class TestGenerationAndExecution {
 	}
 
 	// Create a test case generator
-	private static AbstractTestCaseGenerator createGenerator() throws RESTestException {
+	private static AbstractTestCaseGenerator createGenerator(){
 		// Load specification
 		spec = new OpenAPISpecification(OAISpecPath);
 
@@ -177,38 +170,15 @@ public class TestGenerationAndExecution {
 		conf = loadConfiguration(confPath, spec);
 
 		// Create generator
-		AbstractTestCaseGenerator gen = null;
-
-		switch (generator) {
-		case "FT":
-			gen = new FuzzingTestCaseGenerator(spec, conf, numTestCases);
-			break;
-		case "RT":
-			gen = new RandomTestCaseGenerator(spec, conf, numTestCases);
-			((RandomTestCaseGenerator) gen).setFaultyRatio(faultyRatio);
-			break;
-		case "CBT":
-			gen = new ConstraintBasedTestCaseGenerator(spec, conf, numTestCases);
-			((ConstraintBasedTestCaseGenerator) gen).setFaultyDependencyRatio(faultyDependencyRatio);
-			((ConstraintBasedTestCaseGenerator) gen).setInputDataMaxValues(inputDataMaxValues);
-			((ConstraintBasedTestCaseGenerator) gen).setReloadInputDataEvery(reloadInputDataEvery);
-			gen.setFaultyRatio(faultyRatio);
-			break;
-		case "ART":
-			gen = new ARTestCaseGenerator(spec, conf, numTestCases);
-			((ARTestCaseGenerator) gen).setFaultyDependencyRatio(faultyDependencyRatio);
-			((ARTestCaseGenerator) gen).setInputDataMaxValues(inputDataMaxValues);
-			((ARTestCaseGenerator) gen).setReloadInputDataEvery(reloadInputDataEvery);
-			((ARTestCaseGenerator) gen).setDiversity(similarityMetric);
-			((ARTestCaseGenerator) gen).setNumberOfCandidates(numberCandidates);
-			gen.setFaultyRatio(faultyRatio);
-			break;
-		default:
-			throw new RESTestException("Property 'generator' must be one of 'FT', 'RT', 'CBT' or 'ART'");
-		}
-
+		ARTestCaseGenerator gen = null;
+		gen = new ARTestCaseGenerator(spec, conf, numTestCases);
+		gen.setFaultyDependencyRatio(faultyDependencyRatio);
+		gen.setInputDataMaxValues(inputDataMaxValues);
+		gen.setReloadInputDataEvery(reloadInputDataEvery);
+		gen.setDiversity(similarityMetric);
+		gen.setNumberOfCandidates(numberCandidates);
+		gen.setFaultyRatio(faultyRatio);
 		gen.setCheckTestCases(checkTestCases);
-
 		return gen;
 	}
 
@@ -283,20 +253,6 @@ public class TestGenerationAndExecution {
 		logger.info("Time report generated.");
 	}
 
-	/*
-	 * Stop the execution n seconds
-	 */
-	private static void delay(Integer time) {
-		try {
-			logger.info("Introducing delay of {} seconds", time);
-			TimeUnit.SECONDS.sleep(time);
-		} catch (InterruptedException e) {
-			logger.error("Error introducing delay", e);
-			logger.error(e.getMessage());
-			Thread.currentThread().interrupt();
-		}
-	}
-
 	// Read the parameter values from the .properties file. If the value is not found, the system looks for it in the global .properties file (config.properties)
 	private static void readParameterValues() {
 
@@ -355,9 +311,6 @@ public class TestGenerationAndExecution {
 			totalNumTestCases = Integer.parseInt(readParameterValue("numtotaltestcases"));
 		logger.info("Max number of test cases: {}", totalNumTestCases);
 
-		if (readParameterValue("delay") != null)
-			timeDelay = Integer.parseInt(readParameterValue("delay"));
-		logger.info("Time delay: {}", timeDelay);
 
 		if (readParameterValue("reloadinputdataevery") != null)
 			reloadInputDataEvery = Integer.parseInt(readParameterValue("reloadinputdataevery"));
