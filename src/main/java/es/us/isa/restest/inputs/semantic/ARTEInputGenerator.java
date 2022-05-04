@@ -7,7 +7,7 @@ import es.us.isa.restest.inputs.semantic.objects.SemanticOperation;
 import es.us.isa.restest.inputs.semantic.objects.SemanticParameter;
 import es.us.isa.restest.specification.OpenAPISpecification;
 import es.us.isa.restest.util.PropertyManager;
-import es.us.isa.restest.util.Timer;
+//import es.us.isa.restest.util.Timer;
 import org.apache.jena.query.ARQ;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ import static es.us.isa.restest.util.CSVManager.setToCSVWithLimit;
 import static es.us.isa.restest.util.FileManager.*;
 import static es.us.isa.restest.util.PropertyManager.readProperty;
 import static es.us.isa.restest.configuration.generators.DefaultTestConfigurationGenerator.SEMANTIC_PARAMETER;
-import static es.us.isa.restest.util.Timer.TestStep.ALL;
+//import static es.us.isa.restest.util.Timer.TestStep.ALL;
 
 public class ARTEInputGenerator {
 
@@ -69,7 +69,7 @@ public class ARTEInputGenerator {
 
     public static void main(String[] args) {
 
-        Timer.startCounting(ALL);
+//        Timer.startCounting(ALL);
 
         if (args.length > 0) {
             propertiesFilePath = args[0];
@@ -175,7 +175,7 @@ public class ARTEInputGenerator {
         TestConfigurationIO.toFile(newConf, semanticConfPath);
         log.info("Test configuration file updated");
 
-        Timer.stopCounting(ALL);
+//        Timer.stopCounting(ALL);
         generateTimeReport();        // Iteration = 1
 
     }
@@ -186,12 +186,12 @@ public class ARTEInputGenerator {
         Path fn = path.getFileSystem().getPath("time_ARTE.csv");
         Path target = (dir == null) ? fn : dir.resolve(fn);
         String timePath = target.toString();
-        try {
-            Timer.exportToCSV(timePath, 1);
-        } catch (RuntimeException e) {
-            log.error("The time report cannot be generated. Stack trace:");
-            log.error(e.getMessage());
-        }
+//        try {
+//            Timer.exportToCSV(timePath, 1);
+//        } catch (RuntimeException e) {
+//            log.error("The time report cannot be generated. Stack trace:");
+//            log.error(e.getMessage());
+//        }
         log.info("Time report generated.");
     }
 
