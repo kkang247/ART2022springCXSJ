@@ -43,7 +43,7 @@ public class ARTestCaseGenerator extends ConstraintBasedTestCaseGenerator {
                 }
             }
         }
-
+//        TestCase test = generateTestCase(testOperation, faultyReason);
         TestCase test = bestResult.getValue0();
 
         if (test != null) {

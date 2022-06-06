@@ -3,6 +3,7 @@ package es.us.isa.restest.runners;
 import java.util.Collection;
 
 import es.us.isa.restest.specification.OpenAPISpecification;
+import es.us.isa.restest.testcases.ReadAndEvaluate;
 import es.us.isa.restest.util.*;
 import es.us.isa.restest.util.ClassLoader;
 import org.apache.logging.log4j.LogManager;
@@ -105,6 +106,7 @@ public class RESTestRunner {
 		logger.info("Generating tests");
 		Timer.startCounting(TEST_SUITE_GENERATION);
 		Collection<TestCase> testCases = generator.generate();
+//		Collection<TestCase> testCases = ReadAndEvaluate.generateCoverageTestCaseCollection();
 		Timer.stopCounting(TEST_SUITE_GENERATION);
         this.numTestCases += testCases.size();
 

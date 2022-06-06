@@ -10,7 +10,7 @@ public class ContentMeter {
     private final double FormPara = 0.25;
 
     /**
-     * <p>返回值越大，相似度越大</p>
+     * <p>返回值越大，相似度越大， 返回值为1时表示完全相同</p>
      */
     public Double apply(TestCase left, TestCase right) {
         final double[] sim = {0};
