@@ -17,7 +17,7 @@ import es.us.isa.restest.reporting.StatsReportManager;
 import es.us.isa.restest.testcases.TestCase;
 import es.us.isa.restest.testcases.writers.IWriter;
 
-import static es.us.isa.restest.util.Timer.TestStep.*;
+//import static es.us.isa.restest.util.Timer.TestStep.*;
 
 /**
  * This class implements a basic test workflow: test generation -&gt; test writing -&gt; class compilation and loading -&gt; test execution -&gt; test report generation -&gt; test coverage report generation
@@ -72,9 +72,7 @@ public class RESTestRunner {
 			System.setProperty("allure.results.directory", allureReportManager.getResultsDirPath());
 			testExecution(getTestClass());
 		}
-
 		generateReports();
-
 		if(learnRegex){
 			statsReportManager.learn(testId, spec, confPath);
 		}
@@ -104,10 +102,14 @@ public class RESTestRunner {
 	    
 		// Generate test cases
 		logger.info("Generating tests");
-		Timer.startCounting(TEST_SUITE_GENERATION);
+//		Timer.startCounting(TEST_SUITE_GENERATION);
 		Collection<TestCase> testCases = generator.generate();
+<<<<<<< HEAD
 //		Collection<TestCase> testCases = ReadAndEvaluate.generateCoverageTestCaseCollection();
 		Timer.stopCounting(TEST_SUITE_GENERATION);
+=======
+//		Timer.stopCounting(TEST_SUITE_GENERATION);
+>>>>>>> 3b0b808952356ca2d90d4794bd13c2284b1618bd
         this.numTestCases += testCases.size();
 
         // Pass test cases to the statistic report manager (CSV writing, coverage)
@@ -125,9 +127,9 @@ public class RESTestRunner {
 		JUnitCore junit = new JUnitCore();
 		//junit.addListener(new TextListener(System.out));
 		junit.addListener(new io.qameta.allure.junit4.AllureJunit4());
-		Timer.startCounting(TEST_SUITE_EXECUTION);
+//		Timer.startCounting(TEST_SUITE_EXECUTION);
 		Result result = junit.run(testClass);
-		Timer.stopCounting(TEST_SUITE_EXECUTION);
+//		Timer.stopCounting(TEST_SUITE_EXECUTION);
 		int successfulTests = result.getRunCount() - result.getFailureCount() - result.getIgnoreCount();
 		logger.info("{} tests run in {} seconds. Successful: {}, Failures: {}, Ignored: {}", result.getRunCount(), result.getRunTime()/1000, successfulTests, result.getFailureCount(), result.getIgnoreCount());
 

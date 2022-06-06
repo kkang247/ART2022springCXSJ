@@ -5,6 +5,7 @@ import es.us.isa.restest.coverage.CoverageGatherer;
 import es.us.isa.restest.coverage.CoverageMeter;
 import es.us.isa.restest.generators.ARTestCaseGenerator;
 import es.us.isa.restest.generators.AbstractTestCaseGenerator;
+import es.us.isa.restest.generators.RandomTestCaseGenerator;
 import es.us.isa.restest.reporting.AllureReportManager;
 import es.us.isa.restest.reporting.StatsReportManager;
 import es.us.isa.restest.runners.RESTestRunner;
@@ -12,22 +13,15 @@ import es.us.isa.restest.specification.OpenAPISpecification;
 import es.us.isa.restest.testcases.writers.IWriter;
 import es.us.isa.restest.testcases.writers.RESTAssuredWriter;
 import es.us.isa.restest.util.*;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
+import org.codehaus.groovy.transform.SourceURIASTTransformation;
 
-import java.io.File;
-import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static es.us.isa.restest.configuration.TestConfigurationIO.loadConfiguration;
 import static es.us.isa.restest.inputs.semantic.ARTEInputGenerator.szEndpoint;
 import static es.us.isa.restest.util.FileManager.createDir;
 import static es.us.isa.restest.util.FileManager.deleteDir;
-import static es.us.isa.restest.util.Timer.TestStep.ALL;
+
 
 /*
  * This class show the basic workflow of test case generation -> test case execution -> test reporting
@@ -37,8 +31,6 @@ public class TestGenerationAndExecution {
 	// Properties file with configuration settings
 	private static String propertiesFilePath = "src/test/resources/Restcountries/restcountries.properties";
 
-	private static List<String> argsList;								// List containing args
-	
 	private static Integer numTestCases; 								// Number of test cases per operation
 	private static String OAISpecPath; 									// Path to OAS specification file
 	private static OpenAPISpecification spec; 							// OAS specification
@@ -69,7 +61,6 @@ public class TestGenerationAndExecution {
 	// For AR Testing only:
 	private static String similarityMetric;								// The algorithm to measure the similarity between test cases
 	private static Integer numberCandidates;							// Number of candidate test cases per AR iteration
-
 	// ARTE
 	private static Boolean learnRegex;									// Set to 'true' if you want RESTest to automatically generate Regular expressions that filter the semantically generated input data
 	private static boolean secondPredicateSearch;
@@ -79,38 +70,13 @@ public class TestGenerationAndExecution {
 	private static Double minimumValueOfMetric;
 	private static int maxNumberOfTriesToGenerateRegularExpression;
 
-	private static Logger logger = LogManager.getLogger(TestGenerationAndExecution.class.getName());
 
 	public static void main(String[] args) throws RESTestException {
-
-		Timer.startCounting(ALL);
-
 		// ONLY FOR LOCAL COPY OF DBPEDIA
 		if (szEndpoint.contains("localhost") || szEndpoint.contains("127.0.0.1"))
 			System.setProperty("http.maxConnections", "10000");
-
-		// Read .properties file path. This file contains the configuration parameters for the generation
-		if (args.length > 0)
-			propertiesFilePath = args[0];
-
-		// Populate configuration parameters, either from arguments or from .properties file
-		argsList = Arrays.asList(args);
 		readParameterValues();
-
-		// Set proxy globally, if specified
-		if (proxy != null) {
-			System.setProperty("http.proxyHost", proxy.split(":")[0]);
-			System.setProperty("http.proxyPort", proxy.split(":")[1]);
-			System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");
-			System.setProperty("https.proxyHost", proxy.split(":")[0]);
-			System.setProperty("https.proxyPort", proxy.split(":")[1]);
-			System.setProperty("https.nonProxyHosts", "localhost|127.0.0.1");
-		}
-
-		// Create target directory if it does not exists
 		createDir(targetDirJava);
-
-		// RESTest runner
 		AbstractTestCaseGenerator generator = createGenerator(); // Test case generator
 		IWriter writer = createWriter(); // Test case writer
 		StatsReportManager statsReportManager = createStatsReportManager(); // Stats reporter
@@ -119,16 +85,11 @@ public class TestGenerationAndExecution {
 		RESTestRunner runner = new RESTestRunner(testClassName, targetDirJava, packageName, learnRegex,
 				secondPredicateSearch, spec, confPath, generator, writer,
 				reportManager, statsReportManager);
-
 		runner.setExecuteTestCases(executeTestCases);
 		runner.setAllureReport(allureReports);
 
 
-
-		// Main loop
-		int iteration = 1;
 		while (totalNumTestCases == -1 || runner.getNumTestCases() < totalNumTestCases) {
-
 			// Generate unique test class name to avoid the same class being loaded everytime
 			String id = IDGenerator.generateTimeId();
 			String className = testClassName + "_" + id;
@@ -136,42 +97,21 @@ public class TestGenerationAndExecution {
 			((RESTAssuredWriter) writer).setTestId(id);
 			runner.setTestClassName(className);
 			runner.setTestId(id);
-
 			// Test case generation + execution + test report generation
 			runner.run();
-
-			logger.info("Iteration {}. {} test cases generated.", iteration, runner.getNumTestCases());
-			iteration++;
 		}
 
-		Timer.stopCounting(ALL);
-
-		generateTimeReport(iteration-1);
 	}
 
 	// Create a test case generator
 	private static AbstractTestCaseGenerator createGenerator(){
 		// Load specification
 		spec = new OpenAPISpecification(OAISpecPath);
-
 		// Load configuration
 		TestConfigurationObject conf;
 
-		if(generator.equals("FT") && confPath == null) {
-			logger.info("No testConf specified. Generating one");
-			String[] args = {OAISpecPath};
-			CreateTestConf.main(args);
-
-			String specDir = OAISpecPath.substring(0, OAISpecPath.lastIndexOf('/'));
-			confPath = specDir + "/testConf.yaml";
-			logger.info("Created testConf in '{}'", confPath);
-		}
-
 		conf = loadConfiguration(confPath, spec);
-
-		// Create generator
-		ARTestCaseGenerator gen = null;
-		gen = new ARTestCaseGenerator(spec, conf, numTestCases);
+		ARTestCaseGenerator gen = new ARTestCaseGenerator(spec, conf, numTestCases);
 		gen.setFaultyDependencyRatio(faultyDependencyRatio);
 		gen.setInputDataMaxValues(inputDataMaxValues);
 		gen.setReloadInputDataEvery(reloadInputDataEvery);
@@ -179,6 +119,10 @@ public class TestGenerationAndExecution {
 		gen.setNumberOfCandidates(numberCandidates);
 		gen.setFaultyRatio(faultyRatio);
 		gen.setCheckTestCases(checkTestCases);
+//		ARTestCaseGenerator gen = null;
+//		AbstractTestCaseGenerator gen = null;
+//		gen = new RandomTestCaseGenerator(spec, conf, numTestCases);
+//		((RandomTestCaseGenerator) gen).setFaultyRatio(faultyRatio);
 		return gen;
 	}
 
@@ -211,7 +155,6 @@ public class TestGenerationAndExecution {
 
 			//Find auth property names (if any)
 			List<String> authProperties = AllureAuthManager.findAuthProperties(spec, confPath);
-
 			arm = new AllureReportManager(allureResultsDir, allureReportDir, authProperties);
 			arm.setEnvironmentProperties(propertiesFilePath);
 			arm.setHistoryTrend(true);
@@ -242,164 +185,91 @@ public class TestGenerationAndExecution {
 					maxNumberOfTriesToGenerateRegularExpression);
 	}
 
-	private static void generateTimeReport(Integer iterations) {
-		String timePath = readParameterValue("data.tests.dir") + "/" + experimentName + "/" + readParameterValue("data.tests.time");
-		try {
-			Timer.exportToCSV(timePath, iterations);
-		} catch (RuntimeException e) {
-			logger.error("The time report cannot be generated. Stack trace:");
-			logger.error(e.getMessage());
-		}
-		logger.info("Time report generated.");
-	}
 
 	// Read the parameter values from the .properties file. If the value is not found, the system looks for it in the global .properties file (config.properties)
 	private static void readParameterValues() {
-
 		logToFile = Boolean.parseBoolean(readParameterValue("logToFile"));
 		if(logToFile) {
 			setUpLogger();
 		}
-
-		logger.info("Loading configuration parameter values");
-		
 		generator = readParameterValue("generator");
-		logger.info("Generator: {}", generator);
-		
 		OAISpecPath = readParameterValue("oas.path");
-		logger.info("OAS path: {}", OAISpecPath);
-		
 		confPath = readParameterValue("conf.path");
-		logger.info("Test configuration path: {}", confPath);
-		
 		targetDirJava = readParameterValue("test.target.dir");
-		logger.info("Target dir for test classes: {}", targetDirJava);
-		
 		experimentName = readParameterValue("experiment.name");
-		logger.info("Experiment name: {}", experimentName);
 		packageName = experimentName;
-
 		if (readParameterValue("experiment.execute") != null) {
 			executeTestCases = Boolean.parseBoolean(readParameterValue("experiment.execute"));
 		}
-		logger.info("Experiment execution: {}", executeTestCases);
-
 		if (readParameterValue("allure.report") != null) {
 			allureReports = Boolean.parseBoolean(readParameterValue("allure.report"));
 		}
-		logger.info("Allure reports: {}", allureReports);
-
 		if (readParameterValue("proxy") != null) {
 			proxy = readParameterValue("proxy");
 			if ("null".equals(proxy) || proxy.split(":").length != 2)
 				proxy = null;
 		}
-		logger.info("Proxy: {}", proxy);
-
 		if (readParameterValue("testcases.check") != null)
 			checkTestCases = Boolean.parseBoolean(readParameterValue("testcases.check"));
-		logger.info("Check test cases: {}", checkTestCases);
-		
 		testClassName = readParameterValue("testclass.name");
-		logger.info("Test class name: {}", testClassName);
-
 		if (readParameterValue("testsperoperation") != null)
 			numTestCases = Integer.parseInt(readParameterValue("testsperoperation"));
-		logger.info("Number of test cases per operation: {}", numTestCases);
-
 		if (readParameterValue("numtotaltestcases") != null)
 			totalNumTestCases = Integer.parseInt(readParameterValue("numtotaltestcases"));
-		logger.info("Max number of test cases: {}", totalNumTestCases);
-
-
 		if (readParameterValue("reloadinputdataevery") != null)
 			reloadInputDataEvery = Integer.parseInt(readParameterValue("reloadinputdataevery"));
-		logger.info("Input data reloading  (CBT): {}", reloadInputDataEvery);
-
 		if (readParameterValue("inputdatamaxvalues") != null)
 			inputDataMaxValues = Integer.parseInt(readParameterValue("inputdatamaxvalues"));
-		logger.info("Max input test data (CBT): {}", inputDataMaxValues);
-
 		if (readParameterValue("coverage.input") != null)
 			enableInputCoverage = Boolean.parseBoolean(readParameterValue("coverage.input"));
-		logger.info("Input coverage: {}", enableInputCoverage);
-
 		if (readParameterValue("coverage.output") != null)
 			enableOutputCoverage = Boolean.parseBoolean(readParameterValue("coverage.output"));
-		logger.info("Output coverage: {}", enableOutputCoverage);
-
 		if (readParameterValue("stats.csv") != null)
 			enableCSVStats = Boolean.parseBoolean(readParameterValue("stats.csv"));
-		logger.info("CSV statistics: {}", enableCSVStats);
-
 		if (readParameterValue("deletepreviousresults") != null)
 			deletePreviousResults = Boolean.parseBoolean(readParameterValue("deletepreviousresults"));
-		logger.info("Delete previous results: {}", deletePreviousResults);
-
 		if (readParameterValue("similarity.metric") != null)
 			similarityMetric = readParameterValue("similarity.metric");
-		logger.info("Similarity metric: {}", similarityMetric);
-
 		if (readParameterValue("art.number.candidates") != null)
 			numberCandidates = Integer.parseInt(readParameterValue("art.number.candidates"));
-		logger.info("Number of candidates: {}", numberCandidates);
-
 		if (readParameterValue("faulty.ratio") != null)
 			faultyRatio = Float.parseFloat(readParameterValue("faulty.ratio"));
-		logger.info("Faulty ratio: {}", faultyRatio);
-
 		if (readParameterValue("faulty.dependency.ratio") != null)
 			faultyDependencyRatio = Float.parseFloat(readParameterValue("faulty.dependency.ratio"));
-		logger.info("Faulty dependency ratio: {}", faultyDependencyRatio);
-
 		// ARTE
 		if (readParameterValue("learnRegex") != null)
 			learnRegex = Boolean.parseBoolean(readParameterValue("learnRegex"));
-		logger.info("Learn Regular expressions: {}", learnRegex);
-
 		if (readParameterValue("secondPredicateSearch") != null)
 			secondPredicateSearch = Boolean.parseBoolean(readParameterValue("secondPredicateSearch"));
-		logger.info("Second Predicate Search: {}", secondPredicateSearch);
-
 		if (readParameterValue("maxNumberOfPredicates") != null)
 			maxNumberOfPredicates = Integer.parseInt(readParameterValue("maxNumberOfPredicates"));
-		logger.info("Maximum number of predicates: {}", maxNumberOfPredicates);
-
 		if (readParameterValue("minimumValidAndInvalidValues") != null)
 			minimumValidAndInvalidValues = Integer.parseInt(readParameterValue("minimumValidAndInvalidValues"));
-		logger.info("Minimum valid and invalid values: {}", minimumValidAndInvalidValues);
-
 		if (readParameterValue("metricToUse") != null)
 			metricToUse = readParameterValue("metricToUse");
-		logger.info("Metric to use: {}", metricToUse);
-
 		if (readParameterValue("minimumValueOfMetric") != null)
 			minimumValueOfMetric = Double.parseDouble(readParameterValue("minimumValueOfMetric"));
-		logger.info("Minimum value of metric: {}", minimumValueOfMetric);
-
 		if (readParameterValue("maxNumberOfTriesToGenerateRegularExpression") != null)
 			maxNumberOfTriesToGenerateRegularExpression = Integer.parseInt(readParameterValue("maxNumberOfTriesToGenerateRegularExpression"));
-		logger.info("Maximum number of tries to generate a regular expression: {}", maxNumberOfTriesToGenerateRegularExpression);
-	
 	}
 
 	// Read the parameter value from: 1) CLI; 2) the local .properties file; 3) the global .properties file (config.properties)
 	private static String readParameterValue(String propertyName) {
-
 		String value = null;
-
-		if (argsList.contains(propertyName))
-			value = argsList.get(argsList.indexOf(propertyName) + 1);
-		else if (argsList.stream().anyMatch(arg -> arg.matches("^" + propertyName + "=.*")))
-			value = argsList.stream().filter(arg -> arg.matches("^" + propertyName + "=.*")).findFirst().get().split("=")[1];
-		else if (PropertyManager.readProperty(propertiesFilePath, propertyName) != null) // Read value from local .properties file
+		if (PropertyManager.readProperty(propertiesFilePath, propertyName) != null) {
+			System.out.println("333333333333333333333333333333333333333333333333333333333333");
+			System.out.println(PropertyManager.readProperty(propertiesFilePath, propertyName));
+			System.out.println("333333333333333333333333333333333333333333333333333333333333");// Read value from local .properties file
 			value = PropertyManager.readProperty(propertiesFilePath, propertyName);
-		else if (PropertyManager.readProperty(propertyName) != null) // Read value from global .properties file
+		}
+		else if (PropertyManager.readProperty(propertyName) != null) {
+			System.out.println("44444444444444444444444444444444444444444444444444444444444444444");
+			System.out.println(PropertyManager.readProperty(propertyName));
+			System.out.println("44444444444444444444444444444444444444444444444444444444444444444");// Read value from global .properties file
 			value = PropertyManager.readProperty(propertyName);
-
+		}
 		return value;
 	}
-
 
 	public static TestConfigurationObject getTestConfigurationObject(){
 		return loadConfiguration(confPath, spec);
@@ -408,25 +278,13 @@ public class TestGenerationAndExecution {
 	public static String getExperimentName(){ return experimentName; }
 
 	private static void setUpLogger() {
-		// Recreate log directory if necessary
 		if (Boolean.parseBoolean(readParameterValue("deletepreviousresults"))) {
 			String logDataDir = readParameterValue("data.log.dir") + "/" + readParameterValue("experiment.name");
 			deleteDir(logDataDir);
 			createDir(logDataDir);
 		}
-
-		// Attach stdout and stderr to logger
-		System.setOut(new PrintStream(new LoggerStream(LogManager.getLogger("stdout"), Level.INFO, System.out)));
-		System.setErr(new PrintStream(new LoggerStream(LogManager.getLogger("stderr"), Level.ERROR, System.err)));
-
 		// Configure regular logger
 		String logPath = readParameterValue("data.log.dir") + "/" + readParameterValue("experiment.name") + "/" + readParameterValue("data.log.file");
-
 		System.setProperty("logFilename", logPath);
-		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-		File file = new File("src/main/resources/log4j2-logToFile.properties");
-		ctx.setConfigLocation(file.toURI());
-		ctx.reconfigure();
 	}
-
 }
