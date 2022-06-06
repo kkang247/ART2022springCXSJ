@@ -15,6 +15,7 @@ public class ReadAndEvaluate {
     private static List<TestCoverage> testCaseList = new ArrayList<>();
     private static CoverageMeter coverageMeter;
 
+
     public static void setTestCaseList(List<TestCoverage> testCaseList) {
         ReadAndEvaluate.testCaseList = testCaseList;
     }
