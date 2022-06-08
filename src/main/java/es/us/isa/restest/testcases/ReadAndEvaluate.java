@@ -1,6 +1,5 @@
 package es.us.isa.restest.testcases;
 
-import com.alibaba.fastjson.JSON;
 import es.us.isa.restest.testcases.coverage.CoverageMeter;
 import es.us.isa.restest.testcases.coverage.SimpleDiffMeter;
 import es.us.isa.restest.testcases.coverage.SubDomainMeter;
@@ -48,23 +47,51 @@ public class ReadAndEvaluate {
     }
 
     public static void readCoverageTestCases() throws IOException {
-        List<TestCase> testCases = JSONManager.readTestCase("");
+        List<TestCase> testCases = JSONManager.readTestCase();
         HashMap<String, List<String>> testCaseCoverageMap = JSONManager.readCoverage();
-        for (TestCase testCase: testCases) {
+        for (TestCase testCase : testCases) {
             List<String> covList = testCaseCoverageMap.get(testCase.getId());
             List<List<String>> coverageList = new ArrayList<>();
             for (int i = 0; i < 6; i++) {
                 coverageList.add(new ArrayList<>());
             }
-
+            for (int i = 0; i < 5; i++) {
+                coverageList.get(0).add("");
+            }
+            for (int i = 0; i < 5; i++) {
+                coverageList.get(1).add("");
+            }
+            for (int i = 0; i < 15; i++) {
+                coverageList.get(2).add("");
+            }
+            for (int i = 0; i < 7; i++) {
+                coverageList.get(3).add("");
+            }
+            for (int i = 0; i < 6; i++) {
+                coverageList.get(4).add("");
+            }
+            for (int i = 0; i < 5; i++) {
+                coverageList.get(5).add("");
+            }
             for (String str : covList) {
                 String[] s = str.split("-");
-                // 把 1-2-1000 转换成 list《list《string》》
+                int sevId = Integer.parseInt(s[0]);
+                int mtdId = Integer.parseInt(s[1]);
+                String oldCov = coverageList.get(sevId).get(mtdId);
+                if (oldCov.equals("")) {
+                    coverageList.get(sevId).set(mtdId, s[2]);
+                } else {
+                    StringBuilder newCov = new StringBuilder();
+                    for (int i = 0; i < oldCov.length(); i++) {
+                        String additionCov = coverageList.get(sevId).get(mtdId);
+                        newCov.append((oldCov.charAt(i) == '1' || additionCov.charAt(i) == '1') ? '1' : '0');
+                    }
+                    coverageList.get(sevId).set(mtdId, newCov.toString());
+                }
             }
 
             testCaseList.add(new TestCoverage(testCase, coverageList));
         }
-
     }
 
     // merge the new list together with the old list
