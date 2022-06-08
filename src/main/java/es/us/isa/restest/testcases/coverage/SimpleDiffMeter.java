@@ -8,7 +8,6 @@ import java.util.List;
 
 public class SimpleDiffMeter implements CoverageMeter{
 
-    private static final int TestCaseListSize = 10;
     @Override
     public List<TestCoverage> evaluate(List<TestCoverage> testCaseList) {
         List<TestCoverage> result = new ArrayList<>();
@@ -19,7 +18,7 @@ public class SimpleDiffMeter implements CoverageMeter{
                 totalCoverage.get(i).add("");
             }
         }
-        while (hasNullMethod(totalCoverage) && result.size() < TestCaseListSize) {
+        while (hasNullMethod(totalCoverage) || testCaseList.size() == 0) {
             int maxDiff = 0;
             TestCoverage best = null;
             for (TestCoverage newTc : testCaseList) {

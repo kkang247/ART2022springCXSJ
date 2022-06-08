@@ -104,12 +104,9 @@ public class RESTestRunner {
 		logger.info("Generating tests");
 //		Timer.startCounting(TEST_SUITE_GENERATION);
 		Collection<TestCase> testCases = generator.generate();
-<<<<<<< HEAD
+
 //		Collection<TestCase> testCases = ReadAndEvaluate.generateCoverageTestCaseCollection();
-		Timer.stopCounting(TEST_SUITE_GENERATION);
-=======
 //		Timer.stopCounting(TEST_SUITE_GENERATION);
->>>>>>> 3b0b808952356ca2d90d4794bd13c2284b1618bd
         this.numTestCases += testCases.size();
 
         // Pass test cases to the statistic report manager (CSV writing, coverage)
@@ -122,7 +119,7 @@ public class RESTestRunner {
 
 	}
 
-	protected void testExecution(Class<?> testClass)  {
+	protected void testExecution(Class<?> testClass) {
 		
 		JUnitCore junit = new JUnitCore();
 		//junit.addListener(new TextListener(System.out));

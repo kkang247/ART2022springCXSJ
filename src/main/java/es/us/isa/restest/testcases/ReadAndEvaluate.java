@@ -1,5 +1,6 @@
 package es.us.isa.restest.testcases;
 
+import com.alibaba.fastjson.JSON;
 import es.us.isa.restest.testcases.coverage.CoverageMeter;
 import es.us.isa.restest.testcases.coverage.SimpleDiffMeter;
 import es.us.isa.restest.testcases.coverage.SubDomainMeter;
@@ -7,11 +8,12 @@ import es.us.isa.restest.util.JSONManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public class ReadAndEvaluate {
 
-    private static CoverageARTStrategy coverageARTStrategy = CoverageARTStrategy.SUBDOMAIN;
+    private static CoverageARTStrategy coverageARTStrategy = CoverageARTStrategy.SIMPLE;
     private static List<TestCoverage> testCaseList = new ArrayList<>();
     private static CoverageMeter coverageMeter;
 
@@ -41,13 +43,27 @@ public class ReadAndEvaluate {
 
         newTestCaseList = coverageMeter.evaluate(testCaseList);
 
-        // get 10 most different test case or get test covered all methods
         return translateToTestCase(newTestCaseList);
     }
 
     public static void readCoverageTestCases() {
-        testCaseList = new ArrayList<>();
-        coverageMeter = new SimpleDiffMeter();
+        List<TestCase> testCases = JSONManager.readTestCase("");
+        HashMap<String, List<String>> testCaseCoverageMap = JSONManager.readCoverage();
+        for (TestCase testCase: testCases) {
+            List<String> covList = testCaseCoverageMap.get(testCase.getId());
+            List<List<String>> coverageList = new ArrayList<>();
+            for (int i = 0; i < 6; i++) {
+                coverageList.add(new ArrayList<>());
+            }
+
+            for (String str : covList) {
+                String[] s = str.split("-");
+                // 把 1-2-1000 转换成 list《list《string》》
+            }
+
+            testCaseList.add(new TestCoverage(testCase, coverageList));
+        }
+
     }
 
     // merge the new list together with the old list

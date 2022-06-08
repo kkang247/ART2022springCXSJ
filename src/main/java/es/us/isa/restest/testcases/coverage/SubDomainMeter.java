@@ -17,7 +17,7 @@ public class SubDomainMeter implements CoverageMeter{
                 totalCoverage.get(i).add("");
             }
         }
-        while (hasNullMethod(totalCoverage)){
+        while (hasNullMethod(totalCoverage) || testCaseList.size() == 0){
             int fillNum = 0; // how many empty methods this testcase can fill in
             TestCoverage best = null;
             for (TestCoverage newTc : testCaseList) {
