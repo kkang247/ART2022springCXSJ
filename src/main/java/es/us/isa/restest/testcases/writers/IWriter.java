@@ -1,5 +1,6 @@
 package es.us.isa.restest.testcases.writers;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import es.us.isa.restest.testcases.TestCase;
@@ -13,6 +14,6 @@ public interface IWriter {
 	 * From a collection of domain-independent test cases, the method writes domain-specific ready-to-run test cases using frameworks like RESTAssured.
 	 * @param testCases The collection of domain-independent test cases to be instantiated
 	 */
-	void write(Collection<TestCase> testCases);
+	void write(Collection<TestCase> testCases) throws IOException;
 
 }

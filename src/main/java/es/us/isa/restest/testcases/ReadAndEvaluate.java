@@ -46,6 +46,7 @@ public class ReadAndEvaluate {
     }
 
     public static void readCoverageTestCases() {
+
         testCaseList = new ArrayList<>();
         coverageMeter = new SimpleDiffMeter();
     }

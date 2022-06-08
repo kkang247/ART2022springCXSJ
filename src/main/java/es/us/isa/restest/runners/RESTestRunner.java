@@ -1,6 +1,8 @@
 package es.us.isa.restest.runners;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 
 import es.us.isa.restest.specification.OpenAPISpecification;
 import es.us.isa.restest.testcases.ReadAndEvaluate;
@@ -43,6 +45,8 @@ public class RESTestRunner {
 	private OpenAPISpecification spec;
 	private String confPath;
 
+	public static Collection<TestCase> t;
+
 	private static final Logger logger = LogManager.getLogger(RESTestRunner.class.getName());
 
 	public RESTestRunner(String testClassName, String targetDir, String packageName, Boolean learnRegex, Boolean secondPredicateSearch, OpenAPISpecification spec, String confPath, AbstractTestCaseGenerator generator, IWriter writer, AllureReportManager reportManager, StatsReportManager statsReportManager) {
@@ -61,7 +65,7 @@ public class RESTestRunner {
 
 	}
 	  
-	public void run() throws RESTestException {
+	public void run() throws RESTestException, IOException {
 
 		// Test generation and writing (RESTAssured)
 		testGeneration();
@@ -98,18 +102,14 @@ public class RESTestRunner {
 		return ClassLoader.loadClass(filePath, className);
 	}
 
-	private void testGeneration() throws RESTestException {
+	private void testGeneration() throws RESTestException, IOException {
 	    
 		// Generate test cases
 		logger.info("Generating tests");
 //		Timer.startCounting(TEST_SUITE_GENERATION);
 		Collection<TestCase> testCases = generator.generate();
-<<<<<<< HEAD
-//		Collection<TestCase> testCases = ReadAndEvaluate.generateCoverageTestCaseCollection();
-		Timer.stopCounting(TEST_SUITE_GENERATION);
-=======
-//		Timer.stopCounting(TEST_SUITE_GENERATION);
->>>>>>> 3b0b808952356ca2d90d4794bd13c2284b1618bd
+
+
         this.numTestCases += testCases.size();
 
         // Pass test cases to the statistic report manager (CSV writing, coverage)

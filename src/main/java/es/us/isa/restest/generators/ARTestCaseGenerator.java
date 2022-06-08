@@ -30,21 +30,21 @@ public class ARTestCaseGenerator extends ConstraintBasedTestCaseGenerator {
 
     @Override
     public TestCase generateNextTestCase(Operation testOperation, String faultyReason) throws RESTestException {
-        Pair<TestCase, Double> bestResult = Pair.with(generateTestCase(testOperation, faultyReason), .0);
-
-        if (!testCases.isEmpty()) {
-            for (int i = 0; i < numberOfCandidates-1; i++) {
-                TestCase tc = generateTestCase(testOperation, faultyReason);//generate a new test case
-                if (tc != null) {
-                    //evaluate the "similar distance" of the new case. bigger -> better.
-                    Double minDistance = diversity.evaluate(testCases, tc);
-                    if (minDistance > bestResult.getValue1())//compare the new rate and the max one
-                        bestResult = Pair.with(tc, minDistance);
-                }
-            }
-        }
-//        TestCase test = generateTestCase(testOperation, faultyReason);
-        TestCase test = bestResult.getValue0();
+//        Pair<TestCase, Double> bestResult = Pair.with(generateTestCase(testOperation, faultyReason), .0);
+//
+//        if (!testCases.isEmpty()) {
+//            for (int i = 0; i < numberOfCandidates-1; i++) {
+//                TestCase tc = generateTestCase(testOperation, faultyReason);//generate a new test case
+//                if (tc != null) {
+//                    //evaluate the "similar distance" of the new case. bigger -> better.
+//                    Double minDistance = diversity.evaluate(testCases, tc);
+//                    if (minDistance > bestResult.getValue1())//compare the new rate and the max one
+//                        bestResult = Pair.with(tc, minDistance);
+//                }
+//            }
+//        }
+        TestCase test = generateTestCase(testOperation, faultyReason);
+//        TestCase test = bestResult.getValue0();
 
         if (test != null) {
             testCases.add(test);
@@ -56,7 +56,6 @@ public class ARTestCaseGenerator extends ConstraintBasedTestCaseGenerator {
                 }
             }
         }
-
         return test;
     }
 
