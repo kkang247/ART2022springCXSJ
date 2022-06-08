@@ -1,7 +1,10 @@
 package es.us.isa.restest.testcases.writers;
 
-import java.io.FileWriter;
+import java.io.*;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import es.us.isa.restest.configuration.pojos.TestConfigurationObject;
@@ -47,7 +50,8 @@ public class RESTAssuredWriter implements IWriter {
 	private String APIName;							// API name (necessary for folder name of exported data)
 
 	private static final Logger logger = LogManager.getLogger(RESTAssuredWriter.class.getName());
-	
+
+
 	public RESTAssuredWriter(String specPath, String testConfPath, String targetDirJava, String className, String packageName, String baseURI, Boolean logToFile) {
 		this.specPath = specPath;
 		this.spec = new OpenAPISpecification(specPath);
@@ -65,7 +69,7 @@ public class RESTAssuredWriter implements IWriter {
 	 * @see es.us.isa.restest.testcases.writers.IWriter#write(java.util.Collection)
 	 */
 	@Override
-	public void write(Collection<TestCase> testCases) {
+	public void write(Collection<TestCase> testCases) throws IOException {
 		
 		// Initializing content
 		String contentFile = "";
@@ -82,6 +86,8 @@ public class RESTAssuredWriter implements IWriter {
 		// Generate variables to be used.
 		contentFile += generateSetUp(baseURI);
 
+		contentFile += generateAfter();
+
 		// Generate tests
 		int ntest=1;
 		for(TestCase t: testCases)
@@ -92,6 +98,36 @@ public class RESTAssuredWriter implements IWriter {
 		
 		//Save to file
 		saveToFile(targetDirJava,className,contentFile);
+
+		Iterator<TestCase> iterator = testCases.iterator();
+		HashMap<String,String> id_attributes  = new HashMap<>();
+		while (iterator.hasNext()){
+			TestCase t = iterator.next();
+			String id = t.getId();
+			Boolean faulty = t.getFaulty();
+			Boolean fulfillsDependencies = t.getFulfillsDependencies();
+			String faultyReason = t.getFaultyReason();
+			Boolean enableOracles = t.getEnableOracles();
+			String operationId = t.getOperationId();
+			HttpMethod httpMethod = t.getMethod();
+			String path = t.getPath();
+			String inputFormat = t.getInputFormat();
+			String outputFormat = t.getOutputFormat();
+			Map<String, String> headerParameters = t.getHeaderParameters();
+			Map<String, String> pathParameters = t.getPathParameters();
+			Map<String, String> queryParameters = t.getPathParameters();
+			Map<String, String> formParameters = t.getFormParameters();
+
+			String bodyParameter = t.getBodyParameter();
+			String content = "";
+			content += faulty+","+fulfillsDependencies+","+faultyReason+","+enableOracles+","+operationId+","+httpMethod+","+path+","+inputFormat+","+outputFormat+","
+
+//			id_attributes.put(id,)
+		}
+//		for (int i = 0; i < testCases.size(); i++) {
+//			String content = "";
+//			content += testCases.get(i).
+//		}
 		
 		/* Test Compile
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -117,6 +153,7 @@ public class RESTAssuredWriter implements IWriter {
 				+  "import es.us.isa.restest.testcases.restassured.filters.StatusCode5XXFilter;\n"
 				+  "import es.us.isa.restest.testcases.restassured.filters.NominalOrFaultyTestCaseFilter;\n"
 				+  "import es.us.isa.restest.testcases.restassured.filters.StatefulFilter;\n"
+				+  "import java.io.*;"
 				+  "import java.io.File;\n";
 		
 		// OAIValidation (Optional)
@@ -184,7 +221,8 @@ public class RESTAssuredWriter implements IWriter {
 		if (enableStats || enableOutputCoverage) { // This is only needed to export output data to the proper folder
 			content += "\tprivate static final String APIName = \"" + APIName + "\";\n"
 					+  "\tprivate static final String testId = \"" + testId + "\";\n"
-					+  "\tprivate static final CSVFilter csvFilter = new CSVFilter(APIName, testId);\n";
+					+  "\tprivate static final CSVFilter csvFilter = new CSVFilter(APIName, testId);\n"
+					+  "\tprivate static String test_id="+'"'+'"'+";";
 		}
 
 //		if (statefulFilter) {
@@ -249,6 +287,8 @@ public class RESTAssuredWriter implements IWriter {
 		// Generate test case ID (only if stats enabled)
 		content += generateTestCaseId(t.getId());
 
+		content += "\t\ttest_id =" + '"'+ t.getId() + '"'+";";
+
 		// Generate initialization of filters for those that need it
 		content += generateFiltersInitialization(t);
 
@@ -288,13 +328,36 @@ public class RESTAssuredWriter implements IWriter {
 
 		// Generate the end of the try block, including its corresponding catch
 		content += generateTryBlockEnd();
-		
-		// Close test method
+
+
+
 		content += "\t}\n\n";
 		
 		return content;
 	}
 
+
+	private String generateAfter() throws IOException {
+		String content = "\t@After\n" +
+				"\tpublic void read() throws IOException {\n" +
+				"\t\tString content = test_id;\n" +
+				"\t\tappendToFile(content);\n" +
+				"\t}\n" +
+				"\n" +
+				"\tpublic static void appendToFile(String content){\n" +
+				"\t\ttry {\n" +
+				"\t\t\tString fileName = \"F:\\\\创新实践\\\\ART2022springCXSJ_final\\\\src\\\\main\\\\covered_info.txt\";\n" +
+				"\t\t\tRandomAccessFile randomFile = new RandomAccessFile(fileName, \"rw\");\n" +
+				"\t\t\tlong fileLength = randomFile.length();\n" +
+				"\t\t\trandomFile.seek(fileLength);\n" +
+				"\t\t\trandomFile.writeBytes(content + \"\\r\\n\");\n" +
+				"\t\t\trandomFile.close();\n" +
+				"\t\t} catch (IOException e) {\n" +
+				"\t\t\te.printStackTrace();\n" +
+				"\t\t}\n" +
+				"\t}\n";
+		return content;
+	}
 
 	private String generateMethodHeader(TestCase t, int instance) {
 		return "\t@Test\n" +
@@ -546,6 +609,7 @@ public class RESTAssuredWriter implements IWriter {
 		try(FileWriter testClass = new FileWriter(path + "/" + className + ".java")) {
 			testClass.write(contentFile);
 			testClass.flush();
+
 		} catch(Exception ex) {
 			logger.error("Error writing test file");
 			logger.error("Exception: ", ex);

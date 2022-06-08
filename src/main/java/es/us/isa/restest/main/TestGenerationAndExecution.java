@@ -15,6 +15,7 @@ import es.us.isa.restest.testcases.writers.RESTAssuredWriter;
 import es.us.isa.restest.util.*;
 import org.codehaus.groovy.transform.SourceURIASTTransformation;
 
+import java.io.IOException;
 import java.util.List;
 
 import static es.us.isa.restest.configuration.TestConfigurationIO.loadConfiguration;
@@ -29,7 +30,7 @@ import static es.us.isa.restest.util.FileManager.deleteDir;
 public class TestGenerationAndExecution {
 
 	// Properties file with configuration settings
-	private static String propertiesFilePath = "src/test/resources/Restcountries/restcountries.properties";
+	private static String propertiesFilePath = "src/test/resources/CXSJ/booking.properties";
 
 	private static Integer numTestCases; 								// Number of test cases per operation
 	private static String OAISpecPath; 									// Path to OAS specification file
@@ -71,7 +72,7 @@ public class TestGenerationAndExecution {
 	private static int maxNumberOfTriesToGenerateRegularExpression;
 
 
-	public static void main(String[] args) throws RESTestException {
+	public static void main(String[] args) throws RESTestException, IOException {
 		// ONLY FOR LOCAL COPY OF DBPEDIA
 		if (szEndpoint.contains("localhost") || szEndpoint.contains("127.0.0.1"))
 			System.setProperty("http.maxConnections", "10000");
@@ -87,8 +88,6 @@ public class TestGenerationAndExecution {
 				reportManager, statsReportManager);
 		runner.setExecuteTestCases(executeTestCases);
 		runner.setAllureReport(allureReports);
-
-
 		while (totalNumTestCases == -1 || runner.getNumTestCases() < totalNumTestCases) {
 			// Generate unique test class name to avoid the same class being loaded everytime
 			String id = IDGenerator.generateTimeId();
@@ -257,15 +256,9 @@ public class TestGenerationAndExecution {
 	private static String readParameterValue(String propertyName) {
 		String value = null;
 		if (PropertyManager.readProperty(propertiesFilePath, propertyName) != null) {
-			System.out.println("333333333333333333333333333333333333333333333333333333333333");
-			System.out.println(PropertyManager.readProperty(propertiesFilePath, propertyName));
-			System.out.println("333333333333333333333333333333333333333333333333333333333333");// Read value from local .properties file
 			value = PropertyManager.readProperty(propertiesFilePath, propertyName);
 		}
 		else if (PropertyManager.readProperty(propertyName) != null) {
-			System.out.println("44444444444444444444444444444444444444444444444444444444444444444");
-			System.out.println(PropertyManager.readProperty(propertyName));
-			System.out.println("44444444444444444444444444444444444444444444444444444444444444444");// Read value from global .properties file
 			value = PropertyManager.readProperty(propertyName);
 		}
 		return value;

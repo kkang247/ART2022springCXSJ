@@ -299,4 +299,8 @@ public class StatsReportManager {
         this.testCases = testCases;
     }
 
+//    public Collection<TestCase> reportTestCases(Collection<TestCase> testCases){
+//
+//    }
+
 }

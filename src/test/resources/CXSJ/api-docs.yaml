@@ -1,495 +1,32 @@
-#openapi: 3.0.0
-#servers:
-#  - url: 'https://restcountries.com'
-#info:
-#  description: 'REST countries API'
-#  title: REST countries API
-#  version: v2.0.5
-#paths:
-#  /v2/all:
-#    get:
-#      operationId: v2All
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/alpha/{alphacode}:
-#    get:
-#      operationId: v2Alphacode
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: alphacode
-#          description: Search by ISO 3166-1 2-letter or 3-letter country code
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/alpha:
-#    get:
-#      operationId: v2Alphacodes
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: codes
-#          description: Search by list of ISO 3166-1 2-letter or 3-letter country codes
-#          in: query
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/currency/{currency}:
-#    get:
-#      operationId: v2Currency
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: currency
-#          description: Search by ISO 4217 currency code
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/name/{name}:
-#    get:
-#      operationId: v2Name
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: name
-#          description: Search by country name. It can be the native name or partial name
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#        - name: fullText
-#          in: query
-#          required: false
-#          schema:
-#            type: boolean
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/callingcode/{callingcode}:
-#    get:
-#      operationId: v2Callingcode
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: callingcode
-#          description: Search by calling code
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/capital/{capital}:
-#    get:
-#      operationId: v2Capital
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: capital
-#          description: Search by capital city
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/continent/{region}:
-#    get:
-#      operationId: v2Region
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: region
-#          description: "In version 2 regions are continent and subregions are region Search by continent: Africa, Americas, Asia, Europe, Oceania"
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/lang/{lang}:
-#    get:
-#      operationId: v2Lang
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: lang
-#          description: Search by ISO 639-1 language code
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v2/regionalbloc/{regionalbloc}:
-#    get:
-#      operationId: v2Regionalbloc
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: regionalbloc
-#          description: >
-#            Search by regional bloc:
-#              EU (European Union)
-#              EFTA (European Free Trade Association)
-#              CARICOM (Caribbean Community)
-#              PA (Pacific Alliance)
-#              AU (African Union)
-#              USAN (Union of South American Nations)
-#              EEU (Eurasian Economic Union)
-#              AL (Arab League)
-#              ASEAN (Association of Southeast Asian Nations)
-#              CAIS (Central American Integration System)
-#              CEFTA (Central European Free Trade Agreement)
-#              NAFTA (North American Free Trade Agreement)
-#              SAARC (South Asian Association for Regional Cooperation)
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/all:
-#    get:
-#      operationId: v3All
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/alpha/{alphacode}:
-#    get:
-#      operationId: v3Alphacode
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: alphacode
-#          description: Search by ISO 3166-1 2-letter or 3-letter country code
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/alpha:
-#    get:
-#      operationId: v3Alphacodes
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: codes
-#          description: Search by list of ISO 3166-1 2-letter or 3-letter country codes
-#          in: query
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/currency/{currency}:
-#    get:
-#      operationId: v3Currency
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: currency
-#          description: Search by currency code or name
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/name/{name}:
-#    get:
-#      operationId: v3Name
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: name
-#          description: Search by country name. It can be the common or official value
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#        - name: fullText
-#          in: query
-#          required: false
-#          schema:
-#            type: boolean
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/capital/{capital}:
-#    get:
-#      operationId: v3Capital
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: capital
-#          description: Search by capital city
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/region/{region}:
-#    get:
-#      operationId: v3Region
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: region
-#          description: In version 3, continents are Regions and regions are Subregions
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/subregion/{subregion}:
-#    get:
-#      operationId: v3Subregion
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: subregion
-#          description: You can search by subregions
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/lang/{lang}:
-#    get:
-#      operationId: v3Lang
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: lang
-#          description: Search by language code or name
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/demonym/{demonym}:
-#    get:
-#      operationId: v3Demonym
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: demonym
-#          description: Now you can search by how a citizen is called.
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#  /v3/translation/{translation}:
-#    get:
-#      operationId: v3Translation
-#      parameters:
-#        - name: fields
-#          description: You can filter the output of your request to include only the specified fields.
-#          in: query
-#          required: false
-#          schema:
-#            type: string
-#        - name: translation
-#          description: You can search by any translation name
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#      responses:
-#        '200':
-#          description: Successful response
-#        default:
-#          description: Other responses
-#components:
-#  schemas: { }
 openapi: 3.0.3
 info:
   title: "\u81F4\u65B0\u4E66\u9662\u8BA8\u8BBA\u95F4\u9884\u7EA6\u7CFB\u7EDF"
   version: '1.0'
 servers:
-  - url: http://localhost:9999
-    description: Inferred Url
+- url: http://localhost:9999
+  description: Inferred Url
 tags:
-  - name: admin-controller
-    description: Admin Controller
-  - name: black-list-controller
-    description: Black List Controller
-  - name: booking-controller
-    description: Booking Controller
-  - name: common-controller
-    description: Common Controller
-  - name: dishonest-controller
-    description: Dishonest Controller
-  - name: login-controller
-    description: Login Controller
-  - name: room-controller
-    description: Room Controller
-  - name: white-list-controller
-    description: White List Controller
+- name: admin-controller
+  description: Admin Controller
+- name: black-list-controller
+  description: Black List Controller
+- name: booking-controller
+  description: Booking Controller
+- name: common-controller
+  description: Common Controller
+- name: dishonest-controller
+  description: Dishonest Controller
+- name: login-controller
+  description: Login Controller
+- name: room-controller
+  description: Room Controller
+- name: white-list-controller
+  description: White List Controller
 paths:
   /api/v1/admin/admin:
     get:
       tags:
-        - admin-controller
+      - admin-controller
       summary: getAdmin
       operationId: getAdminUsingGET
       responses:
@@ -509,7 +46,7 @@ paths:
           description: Not Found
     post:
       tags:
-        - admin-controller
+      - admin-controller
       summary: addAdmin
       operationId: addAdminUsingPOST
       requestBody:
@@ -536,7 +73,7 @@ paths:
           description: Not Found
     delete:
       tags:
-        - admin-controller
+      - admin-controller
       summary: deleteAdmin
       operationId: deleteAdminUsingDELETE
       requestBody:
@@ -562,7 +99,7 @@ paths:
   /api/v1/admin/blacklist:
     get:
       tags:
-        - black-list-controller
+      - black-list-controller
       summary: getAdmin
       operationId: getAdminUsingGET_1
       responses:
@@ -582,7 +119,7 @@ paths:
           description: Not Found
     post:
       tags:
-        - black-list-controller
+      - black-list-controller
       summary: addBlackList
       operationId: addBlackListUsingPOST
       requestBody:
@@ -609,7 +146,7 @@ paths:
           description: Not Found
     delete:
       tags:
-        - black-list-controller
+      - black-list-controller
       summary: deleteAdmin
       operationId: deleteAdminUsingDELETE_1
       requestBody:
@@ -635,7 +172,7 @@ paths:
   /api/v1/admin/booking:
     put:
       tags:
-        - booking-controller
+      - booking-controller
       summary: modifyBookingStatus
       operationId: modifyBookingStatusUsingPUT
       requestBody:
@@ -663,34 +200,34 @@ paths:
   /api/v1/admin/booking/page:
     get:
       tags:
-        - booking-controller
+      - booking-controller
       summary: getBookingRecordByPage
       operationId: getBookingRecordByPageUsingGET
       parameters:
-        - name: page
-          in: query
-          description: page
-          required: false
-          style: form
-          schema:
-            type: integer
-            format: int32
-        - name: size
-          in: query
-          description: size
-          required: false
-          style: form
-          schema:
-            type: integer
-            format: int32
-        - name: room
-          in: query
-          description: room
-          required: false
-          style: form
-          schema:
-            type: integer
-            format: int32
+      - name: page
+        in: query
+        description: page
+        required: false
+        style: form
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        description: size
+        required: false
+        style: form
+        schema:
+          type: integer
+          format: int32
+      - name: room
+        in: query
+        description: room
+        required: false
+        style: form
+        schema:
+          type: integer
+          format: int32
       responses:
         '200':
           description: OK
@@ -709,7 +246,7 @@ paths:
   /api/v1/admin/booking/rating:
     put:
       tags:
-        - booking-controller
+      - booking-controller
       summary: rateBookingRecord
       operationId: rateBookingRecordUsingPUT
       requestBody:
@@ -737,7 +274,7 @@ paths:
   /api/v1/common/booking:
     get:
       tags:
-        - common-controller
+      - common-controller
       summary: getAvailableRecords
       operationId: getAvailableRecordsUsingGET
       responses:
@@ -757,7 +294,7 @@ paths:
           description: Not Found
     post:
       tags:
-        - common-controller
+      - common-controller
       summary: addBookingRecord
       operationId: addBookingRecordUsingPOST
       requestBody:
@@ -784,7 +321,7 @@ paths:
           description: Not Found
     delete:
       tags:
-        - common-controller
+      - common-controller
       summary: cancelBooking
       operationId: cancelBookingUsingDELETE
       requestBody:
@@ -810,7 +347,7 @@ paths:
   /api/v1/common/mybooking:
     get:
       tags:
-        - common-controller
+      - common-controller
       summary: getMyBooking
       operationId: getMyBookingUsingGET
       responses:
@@ -831,7 +368,7 @@ paths:
   /api/v1/common/room:
     get:
       tags:
-        - common-controller
+      - common-controller
       summary: getRooms
       operationId: getRoomsUsingGET
       responses:
@@ -852,7 +389,7 @@ paths:
   /api/v1/admin/dishonest:
     get:
       tags:
-        - dishonest-controller
+      - dishonest-controller
       summary: getAllDishonest
       operationId: getAllDishonestUsingGET
       responses:
@@ -872,7 +409,7 @@ paths:
           description: Not Found
     put:
       tags:
-        - dishonest-controller
+      - dishonest-controller
       summary: modifyRecord
       operationId: modifyRecordUsingPUT
       requestBody:
@@ -899,7 +436,7 @@ paths:
           description: Not Found
     post:
       tags:
-        - dishonest-controller
+      - dishonest-controller
       summary: addDishonest
       operationId: addDishonestUsingPOST
       requestBody:
@@ -926,7 +463,7 @@ paths:
           description: Not Found
     delete:
       tags:
-        - dishonest-controller
+      - dishonest-controller
       summary: deleteDishonest
       operationId: deleteDishonestUsingDELETE
       requestBody:
@@ -952,7 +489,7 @@ paths:
   /api/v1/currentUser:
     get:
       tags:
-        - login-controller
+      - login-controller
       summary: getCurrentUserInfo
       operationId: getCurrentUserInfoUsingGET
       responses:
@@ -973,7 +510,7 @@ paths:
   /api/v1/login:
     post:
       tags:
-        - login-controller
+      - login-controller
       summary: login
       operationId: loginUsingPOST
       requestBody:
@@ -1001,7 +538,7 @@ paths:
   /api/v1/admin/room:
     get:
       tags:
-        - room-controller
+      - room-controller
       summary: getRooms
       operationId: getRoomsUsingGET_1
       responses:
@@ -1021,7 +558,7 @@ paths:
           description: Not Found
     put:
       tags:
-        - room-controller
+      - room-controller
       summary: modifyRoom
       operationId: modifyRoomUsingPUT
       requestBody:
@@ -1048,7 +585,7 @@ paths:
           description: Not Found
     post:
       tags:
-        - room-controller
+      - room-controller
       summary: addRoom
       operationId: addRoomUsingPOST
       requestBody:
@@ -1075,7 +612,7 @@ paths:
           description: Not Found
     delete:
       tags:
-        - room-controller
+      - room-controller
       summary: deleteAdmin
       operationId: deleteAdminUsingDELETE_2
       requestBody:
@@ -1101,7 +638,7 @@ paths:
   /api/v1/admin/add_many:
     post:
       tags:
-        - white-list-controller
+      - white-list-controller
       summary: add_many
       operationId: add_manyUsingPOST
       requestBody:
@@ -1129,7 +666,7 @@ paths:
   /api/v1/admin/whitelist:
     get:
       tags:
-        - white-list-controller
+      - white-list-controller
       summary: getAllWhiteList
       operationId: getAllWhiteListUsingGET
       responses:
@@ -1149,7 +686,7 @@ paths:
           description: Not Found
     post:
       tags:
-        - white-list-controller
+      - white-list-controller
       summary: addWhiteList
       operationId: addWhiteListUsingPOST
       requestBody:
@@ -1176,7 +713,7 @@ paths:
           description: Not Found
     delete:
       tags:
-        - white-list-controller
+      - white-list-controller
       summary: deleteWhiteList
       operationId: deleteWhiteListUsingDELETE
       requestBody:
@@ -1240,9 +777,9 @@ components:
         status:
           type: string
           enum:
-            - AVAILABLE
-            - FINISH
-            - PENDING
+          - AVAILABLE
+          - FINISH
+          - PENDING
     RequestBookingRating:
       title: RequestBookingRating
       type: object
@@ -1253,11 +790,11 @@ components:
         rating:
           type: string
           enum:
-            - ABSENCE
-            - DAMAGE
-            - NONE
-            - NORMAL
-            - RUBBISH
+          - ABSENCE
+          - DAMAGE
+          - NONE
+          - NORMAL
+          - RUBBISH
     RequestBookingRecord:
       title: RequestBookingRecord
       type: object
@@ -1297,12 +834,12 @@ components:
         priority:
           type: string
           enum:
-            - LOW
-            - NORMAL
+          - LOW
+          - NORMAL
         roomName:
           type: string
         status:
           type: string
           enum:
-            - CLOSE
-            - OPEN
+          - CLOSE
+          - OPEN
