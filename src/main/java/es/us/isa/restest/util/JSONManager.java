@@ -73,45 +73,52 @@ public class JSONManager {
         return json;
     }
 
-    public static String saveAsJson(Collection<TestCase> testCases){
+    public static void saveAsJson(Collection<TestCase> testCases){
         String jsonString = JSON.toJSONString(testCases);
         System.out.println(jsonString);
         String filePath = "";
 
-//        try {
-//            // 保证创建一个新文件
-//            File file = new File(filePath);
-//            if (!file.getParentFile().exists()) { // 如果父目录不存在，创建父目录
-//                file.getParentFile().mkdirs();
-//            }
-//            if (file.exists()) { // 如果已存在,删除旧文件
-//                file.delete();
-//            }
-//            file.createNewFile();
-//            // 将格式化后的字符串写入文件
-//            Writer write = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
-//            write.write(jsonString);
-//            write.flush();
-//            write.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        return jsonString;
+        try {
+            // 保证创建一个新文件
+            File file = new File(filePath);
+            if (!file.getParentFile().exists()) { // 如果父目录不存在，创建父目录
+                file.getParentFile().mkdirs();
+            }
+            if (file.exists()) { // 如果已存在,删除旧文件
+                file.delete();
+            }
+            file.createNewFile();
+            // 将格式化后的字符串写入文件
+            Writer write = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+            write.write(jsonString);
+            write.flush();
+            write.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public static List<TestCase> readTestCase(String json){
-        List<TestCase> cases = JSON.parseArray(json, TestCase.class);
-        for (TestCase tc: cases) {
-            System.out.println(tc.getId());
+    public static List<TestCase> readTestCase() {
+        String jsonPath = "";
+        BufferedReader bufferedReader;
+        StringBuilder result = new StringBuilder();
+        try {
+            bufferedReader = new BufferedReader(new FileReader(new File(jsonPath)));
+            String temp;
+            while ((temp = bufferedReader.readLine()) != null){
+                result.append(temp);
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return cases;
+
+        return JSON.parseArray(result.toString(), TestCase.class);
     }
 
     public static HashMap<String, List<String>> readCoverage(){
         HashMap<String, List<String>> result = new HashMap<>();
         List<String> covList = new ArrayList<>();
-
-
 
         covList.add("1-1-1000");
         covList.add("2-2-0001");

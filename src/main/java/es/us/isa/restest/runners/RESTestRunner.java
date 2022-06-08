@@ -1,5 +1,6 @@
 package es.us.isa.restest.runners;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import es.us.isa.restest.specification.OpenAPISpecification;
@@ -61,7 +62,7 @@ public class RESTestRunner {
 
 	}
 	  
-	public void run() throws RESTestException {
+	public void run() throws RESTestException, IOException {
 
 		// Test generation and writing (RESTAssured)
 		testGeneration();
@@ -98,13 +99,12 @@ public class RESTestRunner {
 		return ClassLoader.loadClass(filePath, className);
 	}
 
-	private void testGeneration() throws RESTestException {
+	private void testGeneration() throws RESTestException, IOException {
 	    
 		// Generate test cases
 		logger.info("Generating tests");
 //		Timer.startCounting(TEST_SUITE_GENERATION);
 		Collection<TestCase> testCases = generator.generate();
-
 //		Collection<TestCase> testCases = ReadAndEvaluate.generateCoverageTestCaseCollection();
 //		Timer.stopCounting(TEST_SUITE_GENERATION);
         this.numTestCases += testCases.size();
