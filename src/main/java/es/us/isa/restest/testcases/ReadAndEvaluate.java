@@ -76,6 +76,7 @@ public class ReadAndEvaluate {
             }
             for (String str : covList) {
                 String[] s = str.split("-");
+                if (s.length != 3) break;
                 int sevId = Integer.parseInt(s[0]);
                 int mtdId = Integer.parseInt(s[1]);
                 String oldCov = coverageList.get(sevId).get(mtdId);

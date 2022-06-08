@@ -26,6 +26,8 @@ public class JSONManager {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final String jsonFilePath = "";
+
     public static List<Object> readMultipleJSONs(List<String> jsonPaths) {
         List<Object> values = new ArrayList<Object>();
         Object jsonData;
@@ -76,19 +78,16 @@ public class JSONManager {
     public static void saveAsJson(Collection<TestCase> testCases){
         String jsonString = JSON.toJSONString(testCases);
         System.out.println(jsonString);
-        String filePath = "";
 
         try {
-            // 保证创建一个新文件
-            File file = new File(filePath);
-            if (!file.getParentFile().exists()) { // 如果父目录不存在，创建父目录
+            File file = new File(jsonFilePath);
+            if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
-            if (file.exists()) { // 如果已存在,删除旧文件
+            if (file.exists()) {
                 file.delete();
             }
             file.createNewFile();
-            // 将格式化后的字符串写入文件
             Writer write = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             write.write(jsonString);
             write.flush();
@@ -99,11 +98,10 @@ public class JSONManager {
     }
 
     public static List<TestCase> readTestCase() {
-        String jsonPath = "";
         BufferedReader bufferedReader;
         StringBuilder result = new StringBuilder();
         try {
-            bufferedReader = new BufferedReader(new FileReader(new File(jsonPath)));
+            bufferedReader = new BufferedReader(new FileReader(new File(jsonFilePath)));
             String temp;
             while ((temp = bufferedReader.readLine()) != null){
                 result.append(temp);
