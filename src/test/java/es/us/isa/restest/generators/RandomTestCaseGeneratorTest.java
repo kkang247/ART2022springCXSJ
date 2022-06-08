@@ -21,6 +21,7 @@ import static es.us.isa.restest.coverage.CriterionType.PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +31,7 @@ public class RandomTestCaseGeneratorTest {
 	// PET STORE
 
 	@Test
-	public void petstoreTestCaseGeneratorWithFilters() throws RESTestException {
+	public void petstoreTestCaseGeneratorWithFilters() throws RESTestException, IOException {
 		// Load specification
 		String OAISpecPath = "src/test/resources/Petstore/swagger.yaml";
 		String testConf = "src/test/resources/Petstore/fullConf.yaml";
@@ -194,7 +195,7 @@ public class RandomTestCaseGeneratorTest {
 	// BIKEWISE
 
 	@Test
-	public void bikewiseFullTestCaseGenerator() throws RESTestException {
+	public void bikewiseFullTestCaseGenerator() throws RESTestException, IOException {
 		// Load specification
 		String OAISpecPath = "src/test/resources/Bikewise/swagger.yaml";
 		String testConf = "src/test/resources/Bikewise/fullConf.yaml";
@@ -373,7 +374,7 @@ public class RandomTestCaseGeneratorTest {
 	// AMADEUS
 
 	@Test
-	public void amadeusHotelFullTestCaseGenerator() throws RESTestException {
+	public void amadeusHotelFullTestCaseGenerator() throws RESTestException, IOException {
 		// Load specification
 		String OAISpecPath = "src/test/resources/AmadeusHotel/swagger.yaml";
 		String testConf = "src/test/resources/AmadeusHotel/defaultConf.yaml";
@@ -466,7 +467,7 @@ public class RandomTestCaseGeneratorTest {
 	// SPOTIFY
 
 	@Test
-	public void spotifyGetAlbumWithFilter() throws RESTestException {
+	public void spotifyGetAlbumWithFilter() throws RESTestException, IOException {
 
 		// Load specification
 		String OAISpecPath = "src/test/resources/Spotify/spec.yaml";
@@ -656,7 +657,7 @@ public class RandomTestCaseGeneratorTest {
 	// DATA AT WORK
 
 	@Test
-	public void dataAtWorkFullTestCaseGeneratorTest() throws RESTestException {
+	public void dataAtWorkFullTestCaseGeneratorTest() throws RESTestException, IOException {
 		// Load specification
 		String OAISpecPath = "src/test/resources/DataAtWork/swagger.yaml";
 		String testConf = "src/test/resources/DataAtWork/fullConf.yaml";
@@ -699,7 +700,7 @@ public class RandomTestCaseGeneratorTest {
 	// FOURSQUARE
 
 	@Test
-	public void foursquareFullTestCaseGenerator() throws RESTestException {
+	public void foursquareFullTestCaseGenerator() throws RESTestException, IOException {
 		// Load specification
 		String OAISpecPath = "src/test/resources/Foursquare/swagger.yaml";
 		String testConf = "src/test/resources/Foursquare/testConf_forTestSuite2.yaml";
@@ -741,7 +742,7 @@ public class RandomTestCaseGeneratorTest {
 	// MARVEL
 
 	@Test
-	public void marvelFullTestCaseGenerator() throws RESTestException {
+	public void marvelFullTestCaseGenerator() throws RESTestException, IOException {
 		// Load specification
 		String OAISpecPath = "src/test/resources/Marvel/swagger.yaml";
 		String testConf = "src/test/resources/Marvel/testConf_forTestSuite2.yaml";
@@ -784,7 +785,7 @@ public class RandomTestCaseGeneratorTest {
 	// PLAYLIST
 
 	@Test
-	public void playlistFullTestCaseGenerator() throws RESTestException {
+	public void playlistFullTestCaseGenerator() throws RESTestException, IOException {
 
 		// Load specification
 		String OAISpecPath = "src/test/resources/Playlist/spec.yaml";
@@ -825,7 +826,7 @@ public class RandomTestCaseGeneratorTest {
 	// SIMPLE API
 
 	@Test
-	public void simpleAPIFullTestCaseGenerator() throws RESTestException {
+	public void simpleAPIFullTestCaseGenerator() throws RESTestException, IOException {
 		// Load specification
 		String OAISpecPath = "src/test/resources/SimpleAPI/swagger.yaml";
 		String testConf = "src/test/resources/SimpleAPI/fullConfRight.yaml";
@@ -868,7 +869,7 @@ public class RandomTestCaseGeneratorTest {
 	// TUMBLR
 
 	@Test
-	public void tumblrFullTestCaseGenerator() throws RESTestException {
+	public void tumblrFullTestCaseGenerator() throws RESTestException, IOException {
 		// Load specification
 		String OAISpecPath = "src/test/resources/Tumblr/swagger.yaml";
 		String testConf = "src/test/resources/Tumblr/testConf_forTestSuite2.yaml";
@@ -912,7 +913,7 @@ public class RandomTestCaseGeneratorTest {
 	// COMMENTS
 
 	@Test
-	public void commentsFullTestCaseGeneratorWithFaults() throws RESTestException {
+	public void commentsFullTestCaseGeneratorWithFaults() throws RESTestException, IOException {
 
 		// Load specification
 		String OAISpecPath = "src/test/resources/Comments/swagger.yaml";
@@ -1018,7 +1019,7 @@ public class RandomTestCaseGeneratorTest {
 
 	@Test
 
-	public void travelTestCaseGeneratorWithFaults() throws RESTestException {
+	public void travelTestCaseGeneratorWithFaults() throws RESTestException, IOException {
 
 		// Load specification
 		String OAISpecPath = "src/test/resources/Travel/swagger.yaml";
@@ -1069,7 +1070,7 @@ public class RandomTestCaseGeneratorTest {
 	}
 
 	@Test
-	public void scoutApiTestCaseGenerator() throws RESTestException {
+	public void scoutApiTestCaseGenerator() throws RESTestException, IOException {
 
 		// Load specification
 		String OAISpecPath = "src/test/resources/restest-test-resources/swagger-scout.json";

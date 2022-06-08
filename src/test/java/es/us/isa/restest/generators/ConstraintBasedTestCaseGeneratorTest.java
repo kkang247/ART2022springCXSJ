@@ -11,6 +11,7 @@ import es.us.isa.restest.util.RESTestException;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ConstraintBasedTestCaseGeneratorTest {
 	// BIKEWISE
 
     @Test
-    public void bikewiseFullTestCaseGeneratorNoConstraints() throws RESTestException {
+    public void bikewiseFullTestCaseGeneratorNoConstraints() throws RESTestException, IOException {
         // Load specification
         String OAISpecPath = "src/test/resources/Bikewise/swagger.yaml";
         String testConf = "src/test/resources/Bikewise/fullConf.yaml";
@@ -346,7 +347,7 @@ public class ConstraintBasedTestCaseGeneratorTest {
 	// AMADEUS
 	
     @Test
-    public void amadeusHotelFullTestCaseGenerator() throws RESTestException {
+    public void amadeusHotelFullTestCaseGenerator() throws RESTestException, IOException {
         // Load specification
         String OAISpecPath = "src/test/resources/AmadeusHotel/swagger.yaml";
         String testConf = "src/test/resources/AmadeusHotel/defaultConf.yaml";
@@ -395,7 +396,7 @@ public class ConstraintBasedTestCaseGeneratorTest {
     
 	
     @Test
-    public void amadeusHotelFullTestCaseGeneratorWithFaults() throws RESTestException {
+    public void amadeusHotelFullTestCaseGeneratorWithFaults() throws RESTestException, IOException {
         // Load specification
         String OAISpecPath = "src/test/resources/AmadeusHotel/swagger.yaml";
         String testConf = "src/test/resources/AmadeusHotel/defaultConf.yaml";
@@ -454,7 +455,7 @@ public class ConstraintBasedTestCaseGeneratorTest {
     // COMMENTS
     
 	@Test
-	public void commentsFullTestCaseGeneratorWithPerturbationAndFaults() throws RESTestException {
+	public void commentsFullTestCaseGeneratorWithPerturbationAndFaults() throws RESTestException, IOException {
 		
 		// Load specification
 		String OAISpecPath = "src/test/resources/Comments/swagger.yaml";
@@ -502,7 +503,7 @@ public class ConstraintBasedTestCaseGeneratorTest {
 	}
 	
 	@Test
-	public void commentsConstraintBasedTestCaseGeneratorWithFaults() throws RESTestException {
+	public void commentsConstraintBasedTestCaseGeneratorWithFaults() throws RESTestException, IOException {
 		
 		// Load specification
 		String OAISpecPath = "src/test/resources/Comments/swagger.yaml";
@@ -554,7 +555,7 @@ public class ConstraintBasedTestCaseGeneratorTest {
 	
 	
 	@Test
-	public void commentsConstraintBasedTestCaseGeneratorWithFiltersAndFaults() throws RESTestException {
+	public void commentsConstraintBasedTestCaseGeneratorWithFiltersAndFaults() throws RESTestException, IOException {
 		
 		// Load specification
 		String OAISpecPath = "src/test/resources/Comments/swagger.yaml";

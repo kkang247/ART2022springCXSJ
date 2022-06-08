@@ -8,6 +8,7 @@ import es.us.isa.restest.testcases.writers.RESTAssuredWriter;
 import es.us.isa.restest.util.RESTestException;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +18,7 @@ public class ARTestCaseGeneratorTest {
     //BIKEWISE
 
     @Test
-    public void bikewiseARTestCaseGenerator() throws RESTestException {
+    public void bikewiseARTestCaseGenerator() throws RESTestException, IOException {
         // Load specification
         String OAISpecPath = "src/test/resources/Bikewise/swagger.yaml";
         String testConf = "src/test/resources/Bikewise/fullConf.yaml";
@@ -54,7 +55,7 @@ public class ARTestCaseGeneratorTest {
     }
 
     @Test
-    public void bikewiseARTestCaseGeneratorWithoutFaults() throws RESTestException {
+    public void bikewiseARTestCaseGeneratorWithoutFaults() throws RESTestException, IOException {
         // Load specification
         String OAISpecPath = "src/test/resources/Bikewise/swagger.yaml";
         String testConf = "src/test/resources/Bikewise/fullConf.yaml";
@@ -94,7 +95,7 @@ public class ARTestCaseGeneratorTest {
     // COMMENTS
 
     @Test
-    public void commentsARTestCaseGeneratorWithFaults() throws RESTestException {
+    public void commentsARTestCaseGeneratorWithFaults() throws RESTestException, IOException {
 
         // Load specification
         String OAISpecPath = "src/test/resources/Comments/swagger.yaml";
@@ -148,7 +149,7 @@ public class ARTestCaseGeneratorTest {
     // AMADEUS HOTEL
 
     @Test
-    public void amadeusHotelARTestCaseGeneratorWithFaults() throws RESTestException {
+    public void amadeusHotelARTestCaseGeneratorWithFaults() throws RESTestException, IOException {
         // Load specification
         String OAISpecPath = "src/test/resources/AmadeusHotel/swagger.yaml";
         String testConf = "src/test/resources/AmadeusHotel/defaultConf.yaml";

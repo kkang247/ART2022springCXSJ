@@ -105,6 +105,7 @@ public class RESTestRunner {
 		logger.info("Generating tests");
 //		Timer.startCounting(TEST_SUITE_GENERATION);
 		Collection<TestCase> testCases = generator.generate();
+		JSONManager.saveAsJson(testCases);
 //		Collection<TestCase> testCases = ReadAndEvaluate.generateCoverageTestCaseCollection();
 //		Timer.stopCounting(TEST_SUITE_GENERATION);
         this.numTestCases += testCases.size();

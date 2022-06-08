@@ -33,7 +33,7 @@ public class IterativeExampleTest {
 
     @Ignore // Bikewise is currently down
     @Test
-    public void testIterativeExampleWithBasicPropertiesFile() throws RESTestException {
+    public void testIterativeExampleWithBasicPropertiesFile() throws RESTestException, IOException {
         String propertiesFilePath = "src/test/resources/Bikewise/bikewise_test.properties";
 
         String[] args = {propertiesFilePath};
@@ -50,7 +50,7 @@ public class IterativeExampleTest {
     }
 
     @Test
-    public void testIterativeExampleRandomTestCaseGenerator() throws RESTestException {
+    public void testIterativeExampleRandomTestCaseGenerator() throws RESTestException, IOException {
         String propertiesFilePath = "src/test/resources/AnApiOfIceAndFire/iceandfire_e2e.properties";
 
         String[] args = {propertiesFilePath};
@@ -66,7 +66,7 @@ public class IterativeExampleTest {
     }
 
     @Test
-    public void testIterativeExampleARTestCaseGeneration() throws RESTestException {
+    public void testIterativeExampleARTestCaseGeneration() throws RESTestException, IOException {
         String propertiesFilePath = "src/test/resources/AnApiOfIceAndFire/iceandfire_art.properties";
 
         String[] args = {propertiesFilePath};
@@ -82,7 +82,7 @@ public class IterativeExampleTest {
     }
 
     @Test
-    public void testIterativeExampleFuzzingTestCaseGeneration() throws RESTestException {
+    public void testIterativeExampleFuzzingTestCaseGeneration() throws RESTestException, IOException {
         String propertiesFilePath = "src/test/resources/Comments/comments_betty.properties";
 
         String[] args = {propertiesFilePath};
@@ -161,7 +161,7 @@ public class IterativeExampleTest {
     }
 
     @Test
-    public void testARTEWithRegex() throws RESTestException {
+    public void testARTEWithRegex() throws RESTestException, IOException {
 
         String semanticPropertiesFilePath = "src/test/resources/semanticAPITests/DHL/dhl_semantic.properties";
         String parameterValuesPath = "src/main/resources/TestData/Generated/DHL_e2e/findByAddress_countryCode.csv";

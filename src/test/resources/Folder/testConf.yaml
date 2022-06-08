@@ -8,562 +8,326 @@ auth:
   oauthPath: null
 testConfiguration:
   operations:
-  - testPath: /v2/all
-    operationId: v2All
+  - testPath: /api/v1/admin/admin
+    operationId: getAdminUsingGET
     method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
+    testParameters: null
     expectedResponse: 200
-  - testPath: "/v2/alpha/{alphacode}"
-    operationId: v2Alphacode
-    method: get
+  - testPath: /api/v1/admin/admin
+    operationId: addAdminUsingPOST
+    method: post
     testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: alphacode
-      in: path
+    - name: body
+      in: body
       weight: null
       generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: /v2/alpha
-    operationId: v2Alphacodes
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: codes
-      in: query
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v2/currency/{currency}"
-    operationId: v2Currency
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: currency
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v2/name/{name}"
-    operationId: v2Name
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: name
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: fullText
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomBoolean
+      - type: BodyGenerator
         genParameters: []
         valid: true
     expectedResponse: 200
-  - testPath: "/v2/callingcode/{callingcode}"
-    operationId: v2Callingcode
-    method: get
+  - testPath: /api/v1/admin/admin
+    operationId: deleteAdminUsingDELETE
+    method: delete
     testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: callingcode
-      in: path
+    - name: body
+      in: body
       weight: null
       generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v2/capital/{capital}"
-    operationId: v2Capital
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: capital
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v2/continent/{region}"
-    operationId: v2Region
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: region
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v2/lang/{lang}"
-    operationId: v2Lang
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: lang
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v2/regionalbloc/{regionalbloc}"
-    operationId: v2Regionalbloc
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: regionalbloc
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: /v3/all
-    operationId: v3All
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v3/alpha/{alphacode}"
-    operationId: v3Alphacode
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: alphacode
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: /v3/alpha
-    operationId: v3Alphacodes
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: codes
-      in: query
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v3/currency/{currency}"
-    operationId: v3Currency
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: currency
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    expectedResponse: 200
-  - testPath: "/v3/name/{name}"
-    operationId: v3Name
-    method: get
-    testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: name
-      in: path
-      weight: null
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: fullText
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomBoolean
+      - type: BodyGenerator
         genParameters: []
         valid: true
     expectedResponse: 200
-  - testPath: "/v3/capital/{capital}"
-    operationId: v3Capital
+  - testPath: /api/v1/admin/blacklist
+    operationId: getAdminUsingGET_1
+    method: get
+    testParameters: null
+    expectedResponse: 200
+  - testPath: /api/v1/admin/blacklist
+    operationId: addBlackListUsingPOST
+    method: post
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/blacklist
+    operationId: deleteAdminUsingDELETE_1
+    method: delete
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/booking
+    operationId: modifyBookingStatusUsingPUT
+    method: put
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/booking/page
+    operationId: getBookingRecordByPageUsingGET
     method: get
     testParameters:
-    - name: fields
+    - name: page
       in: query
       weight: 0.5
       generators:
-      - type: RandomEnglishWord
+      - type: RandomNumber
         genParameters:
-        - name: maxWords
+        - name: type
+          values:
+          - int32
+          objectValues: null
+        - name: min
           values:
           - 1
           objectValues: null
+        - name: max
+          values:
+          - 100
+          objectValues: null
         valid: true
-    - name: capital
-      in: path
-      weight: null
+    - name: size
+      in: query
+      weight: 0.5
       generators:
-      - type: RandomEnglishWord
+      - type: RandomNumber
         genParameters:
-        - name: maxWords
+        - name: type
+          values:
+          - int32
+          objectValues: null
+        - name: min
           values:
           - 1
+          objectValues: null
+        - name: max
+          values:
+          - 100
+          objectValues: null
+        valid: true
+    - name: room
+      in: query
+      weight: 0.5
+      generators:
+      - type: RandomNumber
+        genParameters:
+        - name: type
+          values:
+          - int32
+          objectValues: null
+        - name: min
+          values:
+          - 1
+          objectValues: null
+        - name: max
+          values:
+          - 100
           objectValues: null
         valid: true
     expectedResponse: 200
-  - testPath: "/v3/region/{region}"
-    operationId: v3Region
-    method: get
+  - testPath: /api/v1/admin/booking/rating
+    operationId: rateBookingRecordUsingPUT
+    method: put
     testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: region
-      in: path
+    - name: body
+      in: body
       weight: null
       generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
+      - type: BodyGenerator
+        genParameters: []
         valid: true
     expectedResponse: 200
-  - testPath: "/v3/subregion/{subregion}"
-    operationId: v3Subregion
+  - testPath: /api/v1/common/booking
+    operationId: getAvailableRecordsUsingGET
     method: get
+    testParameters: null
+    expectedResponse: 200
+  - testPath: /api/v1/common/booking
+    operationId: addBookingRecordUsingPOST
+    method: post
     testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: subregion
-      in: path
+    - name: body
+      in: body
       weight: null
       generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
+      - type: BodyGenerator
+        genParameters: []
         valid: true
     expectedResponse: 200
-  - testPath: "/v3/lang/{lang}"
-    operationId: v3Lang
-    method: get
+  - testPath: /api/v1/common/booking
+    operationId: cancelBookingUsingDELETE
+    method: delete
     testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: lang
-      in: path
+    - name: body
+      in: body
       weight: null
       generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
+      - type: BodyGenerator
+        genParameters: []
         valid: true
     expectedResponse: 200
-  - testPath: "/v3/demonym/{demonym}"
-    operationId: v3Demonym
+  - testPath: /api/v1/common/mybooking
+    operationId: getMyBookingUsingGET
     method: get
+    testParameters: null
+    expectedResponse: 200
+  - testPath: /api/v1/common/room
+    operationId: getRoomsUsingGET
+    method: get
+    testParameters: null
+    expectedResponse: 200
+  - testPath: /api/v1/admin/dishonest
+    operationId: getAllDishonestUsingGET
+    method: get
+    testParameters: null
+    expectedResponse: 200
+  - testPath: /api/v1/admin/dishonest
+    operationId: modifyRecordUsingPUT
+    method: put
     testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: demonym
-      in: path
+    - name: body
+      in: body
       weight: null
       generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
+      - type: BodyGenerator
+        genParameters: []
         valid: true
     expectedResponse: 200
-  - testPath: "/v3/translation/{translation}"
-    operationId: v3Translation
-    method: get
+  - testPath: /api/v1/admin/dishonest
+    operationId: addDishonestUsingPOST
+    method: post
     testParameters:
-    - name: fields
-      in: query
-      weight: 0.5
-      generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
-        valid: true
-    - name: translation
-      in: path
+    - name: body
+      in: body
       weight: null
       generators:
-      - type: RandomEnglishWord
-        genParameters:
-        - name: maxWords
-          values:
-          - 1
-          objectValues: null
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/dishonest
+    operationId: deleteDishonestUsingDELETE
+    method: delete
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/currentUser
+    operationId: getCurrentUserInfoUsingGET
+    method: get
+    testParameters: null
+    expectedResponse: 200
+  - testPath: /api/v1/login
+    operationId: loginUsingPOST
+    method: post
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/room
+    operationId: getRoomsUsingGET_1
+    method: get
+    testParameters: null
+    expectedResponse: 200
+  - testPath: /api/v1/admin/room
+    operationId: modifyRoomUsingPUT
+    method: put
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/room
+    operationId: addRoomUsingPOST
+    method: post
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/room
+    operationId: deleteAdminUsingDELETE_2
+    method: delete
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/add_many
+    operationId: add_manyUsingPOST
+    method: post
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/whitelist
+    operationId: getAllWhiteListUsingGET
+    method: get
+    testParameters: null
+    expectedResponse: 200
+  - testPath: /api/v1/admin/whitelist
+    operationId: addWhiteListUsingPOST
+    method: post
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
+        valid: true
+    expectedResponse: 200
+  - testPath: /api/v1/admin/whitelist
+    operationId: deleteWhiteListUsingDELETE
+    method: delete
+    testParameters:
+    - name: body
+      in: body
+      weight: null
+      generators:
+      - type: BodyGenerator
+        genParameters: []
         valid: true
     expectedResponse: 200
