@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+//import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import es.us.isa.restest.testcases.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -101,21 +101,35 @@ public class JSONManager {
 
     public static List<TestCase> readTestCase(String json){
         List<TestCase> cases = JSON.parseArray(json, TestCase.class);
-        for (TestCase tc: cases) {
-            System.out.println(tc.getId());
-        }
+//        for (TestCase tc: cases) {
+//            System.out.println(tc.getId());
+//        }
         return cases;
     }
 
-    public static HashMap<String, List<String>> readCoverage(){
+    public static HashMap<String, List<String>> readCoverage() throws IOException {
         HashMap<String, List<String>> result = new HashMap<>();
-        List<String> covList = new ArrayList<>();
-
-
-
-        covList.add("1-1-1000");
-        covList.add("2-2-0001");
-        result.put("TEST111", covList); // put id and coverage
+        BufferedReader br = new BufferedReader(new FileReader("F:\\创新实践\\ART2022springCXSJ_final\\src\\main\\covered_info.txt"));
+        String s;
+//        List<String> covList = new ArrayList<>();
+        String key;
+        while((s = br.readLine())!=null){
+            String[] text;
+            text = s.split(":");
+            String id = text[0];
+            key = id;
+            String[] cases = text[1].split("\\.");
+            List<String> covList = new ArrayList<>();
+            for (int i = 0; i <cases.length ; i++) {
+                covList.add(cases[i]);
+            }
+            result.put(key, covList); // put id and coverage
+//            int class_number = Integer.parseInt(text[0]);
+//            int method_num = Integer.parseInt(text[1]);
+//            int method_line = Integer.parseInt(text[2]);
+//            int line_covered = Integer.parseInt(text[3]);
+        }
+//        appendToFile(content);
         return result;
     }
 }

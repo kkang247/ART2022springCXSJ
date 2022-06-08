@@ -4,6 +4,7 @@ import es.us.isa.restest.testcases.coverage.SimpleDiffMeter;
 import io.swagger.v3.oas.models.PathItem;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,7 +135,7 @@ public class TestCaseTest {
     }
 
     @Test
-    public void testGenerate(){
+    public void testGenerate() throws IOException {
         List<List<String>> cov1 = new ArrayList<>();
         cov1.add(new ArrayList<>());
         cov1.get(0).add("1010");

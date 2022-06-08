@@ -382,7 +382,7 @@ public class RESTAssuredWriter implements IWriter {
 				"\t\t\t}\n" +
 				"\t\t}\n" +
 				"\t\tfor (String key:map.keySet()) {\n" +
-				"\t\t\tString s_covered = key + \",\"+map.get(key);\n" +
+				"\t\t\tString s_covered = key + \"-\"+map.get(key);\n" +
 				"\t\t\tcontent.append(s_covered).append(\".\");\n" +
 				"\t\t}\n" +
 				"\t\tappendToFile(content.toString());\n" +

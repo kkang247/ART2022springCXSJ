@@ -1,5 +1,6 @@
 package es.us.isa.restest.testcases.writers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class RESTAssuredWriterTest {
 	
 	@Test
-	public void test() {
+	public void test() throws IOException {
 		
 		// Load specification
 		String OAISpecPath = "src/test/resources/specifications/petstore.json";
@@ -41,7 +42,7 @@ public class RESTAssuredWriterTest {
 	}
 
 	@Test
-	public void statefulFilterEnabledTest() {
+	public void statefulFilterEnabledTest() throws IOException {
 		// Load specification and testConf
 		String OAISpecPath = "src/test/resources/Comments/swagger_demo.yaml";
 		String testConf = "src/test/resources/Comments/testConf_demo2.yaml";
@@ -62,7 +63,7 @@ public class RESTAssuredWriterTest {
 	}
 
 	@Test
-	public void statefulFilterDisabledTest() {
+	public void statefulFilterDisabledTest() throws IOException {
 		// Load specification and testConf
 		String OAISpecPath = "src/test/resources/Comments/swagger_demo.yaml";
 		String testConf = "src/test/resources/Comments/testConf_demo.yaml";

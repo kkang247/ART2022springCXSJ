@@ -6,6 +6,7 @@ import es.us.isa.restest.testcases.coverage.SimpleDiffMeter;
 import es.us.isa.restest.testcases.coverage.SubDomainMeter;
 import es.us.isa.restest.util.JSONManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class ReadAndEvaluate {
         ReadAndEvaluate.testCaseList = testCaseList;
     }
 
-    public static Collection<TestCase> generateCoverageTestCaseCollection() {
+    public static Collection<TestCase> generateCoverageTestCaseCollection() throws IOException {
 
 //        readCoverageTestCases();
 
@@ -46,7 +47,7 @@ public class ReadAndEvaluate {
         return translateToTestCase(newTestCaseList);
     }
 
-    public static void readCoverageTestCases() {
+    public static void readCoverageTestCases() throws IOException {
         List<TestCase> testCases = JSONManager.readTestCase("");
         HashMap<String, List<String>> testCaseCoverageMap = JSONManager.readCoverage();
         for (TestCase testCase: testCases) {
