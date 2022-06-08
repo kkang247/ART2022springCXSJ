@@ -23,7 +23,7 @@ public class ReadAndEvaluate {
 
     public static Collection<TestCase> generateCoverageTestCaseCollection() throws IOException {
 
-//        readCoverageTestCases();
+        readCoverageTestCases();
 
         switch (coverageARTStrategy){
             case SIMPLE: coverageMeter = new SimpleDiffMeter(); break;
@@ -42,7 +42,7 @@ public class ReadAndEvaluate {
         }
 
         newTestCaseList = coverageMeter.evaluate(testCaseList);
-
+        System.out.println(newTestCaseList.get(0).getCoverageInfo());
         return translateToTestCase(newTestCaseList);
     }
 

@@ -9,6 +9,7 @@ import es.us.isa.restest.util.*;
 import es.us.isa.restest.util.ClassLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 
@@ -104,9 +105,11 @@ public class RESTestRunner {
 		// Generate test cases
 		logger.info("Generating tests");
 //		Timer.startCounting(TEST_SUITE_GENERATION);
-		Collection<TestCase> testCases = generator.generate();
-		JSONManager.saveAsJson(testCases);
-//		Collection<TestCase> testCases = ReadAndEvaluate.generateCoverageTestCaseCollection();
+
+//		Collection<TestCase> testCases = generator.generate();
+//		JSONManager.saveAsJson(testCases);
+
+		Collection<TestCase> testCases = ReadAndEvaluate.generateCoverageTestCaseCollection();
 //		Timer.stopCounting(TEST_SUITE_GENERATION);
         this.numTestCases += testCases.size();
 
@@ -168,4 +171,6 @@ public class RESTestRunner {
 	public void setAllureReport(boolean allureReports) {
 		this.allureReports = allureReports;
 	}
+
+
 }

@@ -26,7 +26,7 @@ public class JSONManager {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String jsonFilePath = "";
+    private static final String jsonFilePath = "F:\\创新实践\\ART2022springCXSJ_final\\src\\main\\testcases.json";
 
     public static List<Object> readMultipleJSONs(List<String> jsonPaths) {
         List<Object> values = new ArrayList<Object>();
