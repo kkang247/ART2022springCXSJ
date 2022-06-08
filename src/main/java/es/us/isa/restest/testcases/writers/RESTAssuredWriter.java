@@ -99,31 +99,31 @@ public class RESTAssuredWriter implements IWriter {
 		//Save to file
 		saveToFile(targetDirJava,className,contentFile);
 
-		Iterator<TestCase> iterator = testCases.iterator();
-		HashMap<String,String> id_attributes  = new HashMap<>();
-		while (iterator.hasNext()){
-			TestCase t = iterator.next();
-			String id = t.getId();
-			Boolean faulty = t.getFaulty();
-			Boolean fulfillsDependencies = t.getFulfillsDependencies();
-			String faultyReason = t.getFaultyReason();
-			Boolean enableOracles = t.getEnableOracles();
-			String operationId = t.getOperationId();
-			HttpMethod httpMethod = t.getMethod();
-			String path = t.getPath();
-			String inputFormat = t.getInputFormat();
-			String outputFormat = t.getOutputFormat();
-			Map<String, String> headerParameters = t.getHeaderParameters();
-			Map<String, String> pathParameters = t.getPathParameters();
-			Map<String, String> queryParameters = t.getPathParameters();
-			Map<String, String> formParameters = t.getFormParameters();
-
-			String bodyParameter = t.getBodyParameter();
-			String content = "";
-			content += faulty+","+fulfillsDependencies+","+faultyReason+","+enableOracles+","+operationId+","+httpMethod+","+path+","+inputFormat+","+outputFormat+","
+//		Iterator<TestCase> iterator = testCases.iterator();
+//		HashMap<String,String> id_attributes  = new HashMap<>();
+//		while (iterator.hasNext()){
+//			TestCase t = iterator.next();
+//			String id = t.getId();
+//			Boolean faulty = t.getFaulty();
+//			Boolean fulfillsDependencies = t.getFulfillsDependencies();
+//			String faultyReason = t.getFaultyReason();
+//			Boolean enableOracles = t.getEnableOracles();
+//			String operationId = t.getOperationId();
+//			HttpMethod httpMethod = t.getMethod();
+//			String path = t.getPath();
+//			String inputFormat = t.getInputFormat();
+//			String outputFormat = t.getOutputFormat();
+//			Map<String, String> headerParameters = t.getHeaderParameters();
+//			Map<String, String> pathParameters = t.getPathParameters();
+//			Map<String, String> queryParameters = t.getPathParameters();
+//			Map<String, String> formParameters = t.getFormParameters();
+//
+//			String bodyParameter = t.getBodyParameter();
+//			String content = "";
+//			content += faulty+","+fulfillsDependencies+","+faultyReason+","+enableOracles+","+operationId+","+httpMethod+","+path+","+inputFormat+","+outputFormat+",";
 
 //			id_attributes.put(id,)
-		}
+//		}
 //		for (int i = 0; i < testCases.size(); i++) {
 //			String content = "";
 //			content += testCases.get(i).
@@ -141,20 +141,24 @@ public class RESTAssuredWriter implements IWriter {
 		if (packageName!=null)
 			content += "package " + packageName + ";\n\n";
 				
-		content += "import org.junit.*;\n"
-				+  "import io.restassured.RestAssured;\n"
-				+  "import io.restassured.response.Response;\n"
-				+  "import org.junit.FixMethodOrder;\n"
-				+  "import static org.junit.Assert.fail;\n"
-				+  "import com.fasterxml.jackson.databind.ObjectMapper;\n"
-				+  "import static org.junit.Assert.assertTrue;\n"
-				+  "import org.junit.runners.MethodSorters;\n"
-		        +  "import io.qameta.allure.restassured.AllureRestAssured;\n"
-				+  "import es.us.isa.restest.testcases.restassured.filters.StatusCode5XXFilter;\n"
-				+  "import es.us.isa.restest.testcases.restassured.filters.NominalOrFaultyTestCaseFilter;\n"
-				+  "import es.us.isa.restest.testcases.restassured.filters.StatefulFilter;\n"
-				+  "import java.io.*;"
-				+  "import java.io.File;\n";
+		content += "import org.junit.*;\n" +
+				"import io.restassured.RestAssured;\n" +
+				"import io.restassured.response.Response;\n" +
+				"import org.junit.FixMethodOrder;\n" +
+				"import static org.junit.Assert.fail;\n" +
+				"import com.fasterxml.jackson.databind.ObjectMapper;\n" +
+				"import static org.junit.Assert.assertTrue;\n" +
+				"import org.junit.runners.MethodSorters;\n" +
+				"import io.qameta.allure.restassured.AllureRestAssured;\n" +
+				"import es.us.isa.restest.testcases.restassured.filters.StatusCode5XXFilter;\n" +
+				"import es.us.isa.restest.testcases.restassured.filters.NominalOrFaultyTestCaseFilter;\n" +
+				"import es.us.isa.restest.testcases.restassured.filters.StatefulFilter;\n" +
+				"import java.io.*;import java.io.File;\n" +
+				"import java.util.ArrayList;\n" +
+				"import java.util.HashMap;\n" +
+				"\n" +
+				"import es.us.isa.restest.testcases.restassured.filters.ResponseValidationFilter;\n" +
+				"import es.us.isa.restest.testcases.restassured.filters.CSVFilter;";
 		
 		// OAIValidation (Optional)
 //		if (OAIValidation)
@@ -330,7 +334,6 @@ public class RESTAssuredWriter implements IWriter {
 		content += generateTryBlockEnd();
 
 
-
 		content += "\t}\n\n";
 		
 		return content;
@@ -338,10 +341,51 @@ public class RESTAssuredWriter implements IWriter {
 
 
 	private String generateAfter() throws IOException {
-		String content = "\t@After\n" +
+		String content = "\n" +
+				"\t@After\n" +
 				"\tpublic void read() throws IOException {\n" +
-				"\t\tString content = test_id;\n" +
-				"\t\tappendToFile(content);\n" +
+				"\t\tStringBuilder content = new StringBuilder(test_id + \":\");\n" +
+				"\t\tBufferedReader br = new BufferedReader(new FileReader(\"F:\\\\zxc-booking-backend-final\\\\coverage.txt\"));\n" +
+				"\t\tString s;\n" +
+				"\t\tString[] text = null;\n" +
+				"\t\tHashMap<String,String> map = new HashMap<>();\n" +
+				"\n" +
+				"\t\twhile((s = br.readLine())!=null){\n" +
+				"\t\t\ttext = s.split(\"-\");\n" +
+				"\t\t\tString class_number = text[0];\n" +
+				"\t\t\tString method_num = text[1];\n" +
+				"\t\t\tString method_line = text[2];\n" +
+				"\t\t\tString line_covered = text[3];\n" +
+				"\t\t\tString key1 = class_number+\"-\"+method_num;\n" +
+				"\n" +
+				"\t\t\tif(!map.containsKey(key1)){\n" +
+				"\t\t\t\tStringBuilder covered = new StringBuilder();\n" +
+				"\t\t\t\tfor (int i = 0; i <Integer.parseInt(method_line) ; i++) {\n" +
+				"\t\t\t\t\tif(i+1==Integer.parseInt(line_covered)){\n" +
+				"\t\t\t\t\t\tcovered.append(\"1\");\n" +
+				"\t\t\t\t\t}else{\n" +
+				"\t\t\t\t\t\tcovered.append(\"0\");\n" +
+				"\t\t\t\t\t}\n" +
+				"\t\t\t\t}\n" +
+				"\t\t\t\tmap.put(key1,covered.toString());\n" +
+				"\t\t\t}else{\n" +
+				"\t\t\t\tStringBuilder sb =new StringBuilder();\n" +
+				"\t\t\t\tString s1 = map.get(key1);\n" +
+				"\t\t\t\tfor (int i = 0; i <s1.length() ; i++) {\n" +
+				"\t\t\t\t\tif(i == Integer.parseInt(line_covered)){\n" +
+				"\t\t\t\t\t\tsb.append(\"1\");\n" +
+				"\t\t\t\t\t}else{\n" +
+				"\t\t\t\t\t\tsb.append(s1.charAt(i));\n" +
+				"\t\t\t\t\t}\n" +
+				"\t\t\t\t}\n" +
+				"\t\t\t\tmap.replace(key1,sb.toString());\n" +
+				"\t\t\t}\n" +
+				"\t\t}\n" +
+				"\t\tfor (String key:map.keySet()) {\n" +
+				"\t\t\tString s_covered = key + \",\"+map.get(key);\n" +
+				"\t\t\tcontent.append(s_covered).append(\".\");\n" +
+				"\t\t}\n" +
+				"\t\tappendToFile(content.toString());\n" +
 				"\t}\n" +
 				"\n" +
 				"\tpublic static void appendToFile(String content){\n" +
@@ -355,7 +399,7 @@ public class RESTAssuredWriter implements IWriter {
 				"\t\t} catch (IOException e) {\n" +
 				"\t\t\te.printStackTrace();\n" +
 				"\t\t}\n" +
-				"\t}\n";
+				"\t}";
 		return content;
 	}
 

@@ -58,6 +58,7 @@ public class ReadAndEvaluate {
 
             for (String str : covList) {
                 String[] s = str.split("-");
+
                 // 把 1-2-1000 转换成 list《list《string》》
             }
 

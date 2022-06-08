@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+//import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import es.us.isa.restest.testcases.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -76,7 +76,7 @@ public class JSONManager {
     public static String saveAsJson(Collection<TestCase> testCases){
         String jsonString = JSON.toJSONString(testCases);
         System.out.println(jsonString);
-        String filePath = "";
+        String filePath = "F:\\创新实践\\ART2022springCXSJ_final\\src\\main\\testcases.json";
 
 //        try {
 //            // 保证创建一个新文件
@@ -110,8 +110,6 @@ public class JSONManager {
     public static HashMap<String, List<String>> readCoverage(){
         HashMap<String, List<String>> result = new HashMap<>();
         List<String> covList = new ArrayList<>();
-
-
 
         covList.add("1-1-1000");
         covList.add("2-2-0001");

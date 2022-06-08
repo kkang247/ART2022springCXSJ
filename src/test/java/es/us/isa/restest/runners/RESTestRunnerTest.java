@@ -14,6 +14,7 @@ import es.us.isa.restest.util.RESTestException;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static es.us.isa.restest.configuration.TestConfigurationIO.loadConfiguration;
@@ -24,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 public class RESTestRunnerTest {
 
     @Test
-    public void testRunner() throws RESTestException {
+    public void testRunner() throws RESTestException, IOException {
         deleteDir("src/generation/java/runnerTest");
         createDir("src/generation/java/runnerTest");
 
