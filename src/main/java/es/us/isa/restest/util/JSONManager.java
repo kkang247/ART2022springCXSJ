@@ -113,6 +113,10 @@ public class JSONManager {
         return JSON.parseArray(result.toString(), TestCase.class);
     }
 
+//    public static HashMap<String, List<String>> readCoverage() throws IOException {
+//
+//    }
+
     public static HashMap<String, List<String>> readCoverage() throws IOException {
         HashMap<String, List<String>> result = new HashMap<>();
         BufferedReader br = new BufferedReader(new FileReader("F:\\创新实践\\ART2022springCXSJ_final\\src\\main\\covered_info.txt"));

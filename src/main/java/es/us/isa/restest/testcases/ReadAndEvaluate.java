@@ -51,6 +51,7 @@ public class ReadAndEvaluate {
         HashMap<String, List<String>> testCaseCoverageMap = JSONManager.readCoverage();
         for (TestCase testCase : testCases) {
             List<String> covList = testCaseCoverageMap.get(testCase.getId());
+            if (covList == null) continue;
             List<List<String>> coverageList = new ArrayList<>();
             for (int i = 0; i < 6; i++) {
                 coverageList.add(new ArrayList<>());
@@ -91,6 +92,14 @@ public class ReadAndEvaluate {
             }
 
             testCaseList.add(new TestCoverage(testCase, coverageList));
+
+        }
+        int cnt = 0;
+        for (TestCoverage tc:testCaseList) {
+            System.out.println("******************");
+            System.out.println(++cnt);
+            System.out.println(tc.getTestCase().getId());
+            System.out.println("*****************");
         }
     }
 

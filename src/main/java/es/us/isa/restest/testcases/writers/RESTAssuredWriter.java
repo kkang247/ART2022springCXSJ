@@ -342,8 +342,13 @@ public class RESTAssuredWriter implements IWriter {
 
 	private String generateAfter() throws IOException {
 		String content = "\n" +
+				"//\t@\n" +
 				"\t@After\n" +
-				"\tpublic void read() throws IOException {\n" +
+				"\tpublic void read() throws IOException, InterruptedException {\n" +
+				"//\t\tString jsonString = JSON.toJSONString();\n" +
+				"//\t\tSootJson sootJson = new SootJson();\n" +
+				"//\t\tsootJson.setTest_id(test_id);\n" +
+				"\n" +
 				"\t\tStringBuilder content = new StringBuilder(test_id + \":\");\n" +
 				"\t\tBufferedReader br = new BufferedReader(new FileReader(\"F:\\\\zxc-booking-backend-final\\\\coverage.txt\"));\n" +
 				"\t\tString s;\n" +
@@ -381,11 +386,18 @@ public class RESTAssuredWriter implements IWriter {
 				"\t\t\t\tmap.replace(key1,sb.toString());\n" +
 				"\t\t\t}\n" +
 				"\t\t}\n" +
+				"\t\tbr.close();\n" +
 				"\t\tfor (String key:map.keySet()) {\n" +
 				"\t\t\tString s_covered = key + \"-\"+map.get(key);\n" +
 				"\t\t\tcontent.append(s_covered).append(\".\");\n" +
 				"\t\t}\n" +
+				"\t\tSystem.out.println(\"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\");\n" +
+				"\t\tSystem.out.println(content.toString());\n" +
+				"\t\tSystem.out.println(\"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\");\n" +
 				"\t\tappendToFile(content.toString());\n" +
+				"\t\tFile file = new File(\"F:\\\\zxc-booking-backend-final\\\\coverage.txt\");\n" +
+				"//\t\tThread.currentThread().sleep(1000);\n" +
+				"\t\tboolean value = file.delete();\n" +
 				"\t}\n" +
 				"\n" +
 				"\tpublic static void appendToFile(String content){\n" +
@@ -399,7 +411,7 @@ public class RESTAssuredWriter implements IWriter {
 				"\t\t} catch (IOException e) {\n" +
 				"\t\t\te.printStackTrace();\n" +
 				"\t\t}\n" +
-				"\t}";
+				"\t}\n";
 		return content;
 	}
 
